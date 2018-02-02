@@ -71,5 +71,7 @@ class GenerateStructure extends Command
         if (!file_exists(app_path('Http/Actions/PostAction.php'))) {
             File::copy(__DIR__ . '/../../resources/stubs/Actions/PostAction.php', app_path('Http/Actions/PostAction.php'));
         }
+
+        exec('sed -i "s/protected \$namespace = .*/protected \$namespace = null;/" app/Providers/RouteServiceProvider.php');
     }
 }

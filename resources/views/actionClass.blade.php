@@ -1,6 +1,6 @@
 {!! $phpTag !!}
 
-namespace App\Http\Actions{{ ($path) ? '\\'.$path : '' }};
+namespace App\Http\Actions{{ ($namespace) ? '\\'.$namespace : '' }};
 
 
 use App\Http\Actions\{{ $action }};

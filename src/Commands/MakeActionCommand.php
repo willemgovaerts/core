@@ -13,7 +13,7 @@ class MakeActionCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'make:action {class} {path?}';
+    protected $signature = 'make:action {class} {namespace?}';
 
     /**
      * The console command description.
@@ -40,7 +40,9 @@ class MakeActionCommand extends Command
     public function handle()
     {
         $class = studly_case($this->argument('class'));
-        $path = $this->argument('path');
+        $namespace = $this->argument('namespace');
+        $path = str_replace('\\', '/', $namespace);
+
         $phpTag = '<?php';
         $filePutPath = app_path('Http/Actions/' . $class . '.php');
 
@@ -54,12 +56,15 @@ class MakeActionCommand extends Command
             File::makeDirectory(app_path('Http/Actions'));
         }
 
-        if ($path && !file_exists(app_path('Http/Actions/' . $path))) {
-            File::makeDirectory(app_path('Http/Actions/' . $path));
+        if ($namespace) {
+            if (!file_exists(app_path('Http/Actions/' . $path))) {
+                File::makeDirectory(app_path('Http/Actions/' . $path), null, true);
+            }
+
             $filePutPath = app_path('Http/Actions/' . $path . '/' . $class . '.php');
         }
 
         File::put($filePutPath,
-            view('core::actionClass', compact('class', 'path', 'phpTag', 'action'))->render());
+            view('core::actionClass', compact('class', 'namespace', 'phpTag', 'action'))->render());
     }
 }
