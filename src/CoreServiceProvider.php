@@ -2,6 +2,8 @@
 
 namespace Levaral\Core;
 
+use Levaral\Core\Commands\GenerateStructure;
+use Levaral\Core\Commands\MakeActionCommand;
 use Levaral\Core\Commands\ModelMakeCommand;
 use Levaral\Core\Commands\ModelsCommand;
 use Illuminate\Support\ServiceProvider;
@@ -13,10 +15,10 @@ class CoreServiceProvider extends ServiceProvider
 
     public function boot()
     {
-        $this->loadViewsFrom(__DIR__ . '/resource/views', 'core');
+        $this->loadViewsFrom(__DIR__ . '/../resources/views', 'core');
 
         $this->publishes([
-            __DIR__ . '/resource/views' => resource_path('views/vendor/core'),
+            __DIR__ . '/../resources/views' => resource_path('views/vendor/core'),
         ]);
     }
 
@@ -26,7 +28,9 @@ class CoreServiceProvider extends ServiceProvider
             $this->commands([
                 GenerateApiJsCommand::class,
                 ModelMakeCommand::class,
-                ModelsCommand::class
+                ModelsCommand::class,
+                GenerateStructure::class,
+                MakeActionCommand::class
             ]);
         }
     }
