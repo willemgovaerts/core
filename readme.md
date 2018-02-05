@@ -28,7 +28,7 @@ levaral:api-js
 This command will generate action class in Actions folder.
 
 ```bash
-make:action {className} {?namespace}
+make:action {className}
 ```
 for e.g
 ```bash
