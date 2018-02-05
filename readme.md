@@ -2,7 +2,7 @@
 
 
 ```bash
-composer require levaral-dev/core
+composer require levaral-dev/core:dev-master
 ```
 
 ## Commands
@@ -28,19 +28,17 @@ levaral:api-js
 This command will generate action class in Actions folder.
 
 ```bash
-make:action {className}
+make:action {namespace}
 ```
 for e.g
 ```bash
-make:action GetDetail
-make:action PostDetail
-make:action GetDetail 'User\Profile'
+make:action 'User\Profile\GetDetail'
 ```
 
 This command will generate model and the base classes in Domain folder.
 
 ```bash
-make:model {ClassName}
+make:model {namespace}
 ```
 
 ## Action Routes

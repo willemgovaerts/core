@@ -1,6 +1,7 @@
 {
     "name": "levaral-dev/core",
     "description": "Levaral foundation package for Laravel Framework",
+    "version" : "1.0.0",
     "minimum-stability": "dev",
     "require": {
         "php": "^7.0",
