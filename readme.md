@@ -10,20 +10,20 @@ composer require levaral-dev/core
 This command will generate base structure.
 
 ```bash
-levaral:generate:structure
+levaral:structure
 ```
 
 This command will generate all the base classes of the models. Argument {model} will generate base classes for the 
 specific model 
 
 ```bash
-levaral:generate:models {model?}
+levaral:models {model?}
 ```
 
 This command will generate all the [api routes/api services] in plain javascript objects
 
 ```bash
-levaral:generate:apijs
+levaral:api-js
 ```
 This command will generate action class in Actions folder.
 
@@ -52,8 +52,8 @@ for e.g
 
 ```bash
 Action::get('get-detail', \App\Http\Actions\User\GetDetail::class); // route name User:GetDetail
-Action::post('get-detail', \App\Http\Actions\User\PotDetail::class); // route name User:PotDetail
-Action::post('get-detail', \App\Http\Actions\User\PotDetail::class); // route name User:PotDetail
-Action::post('get-detail', \App\Http\Actions\User\Profile\GetDetail::class); // route name User:Profile:PotDetail
+Action::post('get-detail', \App\Http\Actions\User\PotDetail::class); // route name User:PostDetail
+Action::post('get-detail', \App\Http\Actions\User\PostDetail::class); // route name User:PostDetail
+Action::post('get-detail', \App\Http\Actions\User\Profile\GetDetail::class); // route name User:Profile:PostDetail
 ```
 
