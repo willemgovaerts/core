@@ -52,7 +52,7 @@ for e.g
 
 ```bash
 Action::get('get-detail', \App\Http\Actions\User\GetDetail::class); // route name User:GetDetail
-Action::post('get-detail', \App\Http\Actions\User\PotDetail::class); // route name User:PostDetail
+Action::post('get-detail', \App\Http\Actions\User\PostDetail::class); // route name User:PostDetail
 Action::post('get-detail', \App\Http\Actions\User\PostDetail::class); // route name User:PostDetail
 Action::post('get-detail', \App\Http\Actions\User\Profile\GetDetail::class); // route name User:Profile:PostDetail
 ```
