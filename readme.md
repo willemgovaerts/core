@@ -2,7 +2,7 @@
 
 
 ```bash
-composer require "levaral-dev/core"
+composer require levaral-dev/core
 ```
 
 ## Commands
