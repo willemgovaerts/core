@@ -1,5 +1,5 @@
 {
-    "name": "levaral/core",
+    "name": "levaral-dev/core",
     "description": "Levaral foundation package for Laravel Framework",
     "minimum-stability": "dev",
     "require": {
