@@ -332,6 +332,19 @@ class ModelsCommand extends Command
                 ->setParentClassName('Model');
         }
 
+        // Make function mutateAttribute
+        $baseModel->addUseStatement('Illuminate\Support\Str');
+        $mutatorBody = "return \$this->{'get'.Str::studly(\$key)}(\$value);";
+        $mutateParameter[]= PhpParameter::create('key');
+        $mutateParameter[] = PhpParameter::create('value');
+
+        $mutatorMethod = PhpMethod::create('mutateAttribute')
+            ->setVisibility(PhpMethod::VISIBILITY_PROTECTED)
+            ->setParameters($mutateParameter)
+            ->setBody($mutatorBody);
+
+        $baseModel->setMethod($mutatorMethod);
+
         // Make function newEloquentBuilder
         $queryClass = $class . 'Query';
         $baseModel
