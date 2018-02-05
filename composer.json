@@ -1,6 +1,7 @@
 {
     "name": "levaral/core",
-    "description": "Levaral laravel foundation package",
+    "description": "Levaral foundation package for Laravel Framework",
+    "minimum-stability": "dev",
     "require": {
         "php": "^7.0",
         "gossi/php-code-generator": "^0.5.0",
