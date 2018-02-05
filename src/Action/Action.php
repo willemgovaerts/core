@@ -25,6 +25,6 @@ class Action
         $name = ltrim(substr($fullPath, strpos($fullPath, "Actions")), 'Actions/');
         $name = rtrim($name, '.php');
 
-        return str_replace('/', ':', $name);
+        return str_replace('/', '.', $name);
     }
 }
