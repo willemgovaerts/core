@@ -1,5 +1,5 @@
 @foreach($namespaces as $namespace => $methods)
-@include('core::stubs.apiNamespaceClass', compact('namespace', 'methods'))
+@include('core::apiNamespaceClass', compact('namespace', 'methods'))
 
 @endforeach
 

@@ -70,6 +70,6 @@ class GenerateApiJsCommand extends Command
             ];
         }
 
-        return file_put_contents(resource_path('assets/js/api.js'), veiw('core::apiClass', compact('namespaces'))->render());
+        return file_put_contents(resource_path('assets/js/api.js'), view('core::apiClass', compact('namespaces'))->render());
     }
 }
