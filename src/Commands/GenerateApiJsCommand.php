@@ -12,14 +12,14 @@ class GenerateApiJsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'levaral:generate:apijs';
+    protected $signature = 'levaral:api-js';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'To generate react api js class';
+    protected $description = 'To generate api routes/api services in plain javascript objects';
 
     /**
      * Create a new command instance.

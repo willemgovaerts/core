@@ -23,7 +23,7 @@ class ModelsCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'levaral:generate:models {model?}';
+    protected $signature = 'levaral:models {model?}';
 
     /**
      * The console command description.

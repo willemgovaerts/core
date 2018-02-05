@@ -13,7 +13,7 @@ class MakeActionCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'make:action {class} {namespace?}';
+    protected $signature = 'make:action {name}';
 
     /**
      * The console command description.
@@ -39,8 +39,10 @@ class MakeActionCommand extends Command
      */
     public function handle()
     {
-        $class = studly_case($this->argument('class'));
-        $namespace = $this->argument('namespace');
+        $name = $this->argument('name');
+        $parts = explode('\\', ltrim($name, '\\'));
+        $namespace = implode('\\', array_slice($parts, 0, -1));
+        $class = array_last($parts);
         $path = str_replace('\\', '/', $namespace);
 
         $phpTag = '<?php';

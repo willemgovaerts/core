@@ -13,14 +13,14 @@ class GenerateStructure extends Command
      *
      * @var string
      */
-    protected $signature = 'levaral:generate:structure';
+    protected $signature = 'levaral:structure';
 
     /**
      * The console command description.
      *
      * @var string
      */
-    protected $description = 'To generate basic structure';
+    protected $description = 'To generate base structure';
 
     /**
      * Create a new command instance.
