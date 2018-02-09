@@ -6,16 +6,27 @@ use Illuminate\Support\Facades\Route;
 
 class Action
 {
-    public static function get($url, $ActionClass)
+    public static function get($url, $ActionClass, $routeName = null)
     {
-        Route::get($url, $ActionClass)
-            ->name(self::getName($ActionClass));
+        if ($routeName) {
+            Route::get($url, $ActionClass)
+                ->name($routeName);
+        } else {
+            Route::get($url, $ActionClass)
+                ->name(self::getName($ActionClass));
+        }
+
     }
 
-    public static function post($url, $ActionClass)
+    public static function post($url, $ActionClass, $routeName = null)
     {
-        Route::post($url, $ActionClass)
-            ->name(self::getName($ActionClass));
+        if ($routeName) {
+            Route::post($url, $ActionClass)
+                ->name($routeName);
+        } else {
+            Route::post($url, $ActionClass)
+                ->name(self::getName($ActionClass));
+        }
     }
 
     protected static function getName($ActionClass)
