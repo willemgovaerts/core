@@ -236,7 +236,7 @@ class BaseAction
         $this->request = $request;
         $this->container = $container;
         $this->redirector = $redirector;
-        $this->validate();
+        $this->validateResolved();
         $parameters = $this->request->route()->parameters();
         return call_user_func_array([$this, 'execute'], $parameters);
     }
