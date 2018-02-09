@@ -22,7 +22,8 @@ class Action
     {
         $reflector = new \ReflectionClass($ActionClass);
         $fullPath = $reflector->getFileName();
-        $name = ltrim(substr($fullPath, strpos($fullPath, "Actions")), 'Actions/');
+        $name = ltrim(substr($fullPath, strpos($fullPath, "Actions")), 'Actions');
+        $name = ltrim($name, "/");
         $name = rtrim($name, '.php');
 
         return str_replace('/', '.', $name);
