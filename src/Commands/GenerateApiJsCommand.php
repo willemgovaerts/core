@@ -50,18 +50,14 @@ class GenerateApiJsCommand extends Command
             if (count($parts) < 2) {
                 continue;
             }
-            $actionArray = explode('\\', $parts[1]);
+            $actionArray = array_reverse(explode('\\', $parts[1]));
             if (count($actionArray) < 2) {
                 continue;
             }
-            $namespace = $actionArray[0];
-            $method = $actionArray[1];
+            $namespace = $actionArray[1];
+            $method = $actionArray[0];
             $params = $compiledRoute->getVariables();
-//            if(($route->methods[0] == 'POST')){
             array_push($params, 'formData');
-//            } else if($route->methods[0] == 'GET') {
-//                array_push($params, 'formData');
-//            }
             $namespaces[$namespace][] = [
                 'method' => strtolower($route->methods[0]),
                 'name' => $method,
@@ -69,7 +65,6 @@ class GenerateApiJsCommand extends Command
                 'path' => str_replace('?', '', str_replace('{', '${', $route->uri))
             ];
         }
-
-        return file_put_contents(resource_path('assets/js/api.js'), view('core::apiClass', compact('namespaces'))->render());
+        return file_put_contents(resource_path('assets/js/api.js'), view('stubs.apiClass', compact('namespaces'))->render());
     }
 }
