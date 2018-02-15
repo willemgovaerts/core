@@ -39,6 +39,7 @@ class GenerateStructure extends Command
      */
     public function handle()
     {
+        $phpTag = '<?php';
         //Create Domain Folder
         if (!file_exists(app_path('Domain'))) {
             File::makeDirectory(app_path('Domain'));
@@ -49,27 +50,19 @@ class GenerateStructure extends Command
             File::makeDirectory(app_path('Http/Actions'));
         }
 
-        //Create DTO Folder
-        if (!file_exists(app_path('DTO'))) {
-            File::makeDirectory(app_path('DTO'));
-        }
-
-        //Create DTO Folder
-        if (!file_exists(app_path('Criteria'))) {
-            File::makeDirectory(app_path('Criteria'));
-        }
-
         //Generate User Domain
         if (!file_exists(app_path('Domain/User'))) {
-            File::copyDirectory(__DIR__ . '/../../resources/stubs/User', app_path('Domain/User'));
+            File::makeDirectory(app_path('Domain/User'), null, true);
+            File::put(app_path('Domain/User/User.php'), view('core::User', compact('phpTag'))->render());
+            File::put(app_path('Domain/User/UserQuery.php'), view('core::UserQuery', compact('phpTag'))->render());
         }
 
         if (!file_exists(app_path('Http/Actions/GetAction.php'))) {
-            File::copy(__DIR__ . '/../../resources/stubs/Actions/GetAction.php', app_path('Http/Actions/GetAction.php'));
+            File::put(app_path('Http/Actions/GetAction.php'), view('core::GetAction', compact('phpTag'))->render());
         }
 
         if (!file_exists(app_path('Http/Actions/PostAction.php'))) {
-            File::copy(__DIR__ . '/../../resources/stubs/Actions/PostAction.php', app_path('Http/Actions/PostAction.php'));
+            File::put(app_path('Http/Actions/PostAction.php'), view('core::PostAction', compact('phpTag'))->render());
         }
 
         exec('sed -i "s/protected \$namespace = .*/protected \$namespace = null;/" app/Providers/RouteServiceProvider.php');

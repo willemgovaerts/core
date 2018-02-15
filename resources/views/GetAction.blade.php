@@ -1,4 +1,4 @@
-<?php
+{!! $phpTag !!}
 
 namespace App\Http\Actions;
 

@@ -1,4 +1,5 @@
-<?php
+{!! $phpTag !!}
+
 namespace App\Domain\User;
 
 use \App\Domain\Base\User\BaseUserQuery;
