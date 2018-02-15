@@ -65,6 +65,6 @@ class GenerateApiJsCommand extends Command
                 'path' => str_replace('?', '', str_replace('{', '${', $route->uri))
             ];
         }
-        return file_put_contents(resource_path('assets/js/api.js'), view('stubs.apiClass', compact('namespaces'))->render());
+        return file_put_contents(resource_path('assets/js/api.js'), view('core::apiClass', compact('namespaces'))->render());
     }
 }
