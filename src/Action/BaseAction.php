@@ -242,7 +242,7 @@ class BaseAction
     }
 
     /**
-     * @return Domain\User\User
+     * @return \App\Domain\User\User
      */
     protected function user()
     {
