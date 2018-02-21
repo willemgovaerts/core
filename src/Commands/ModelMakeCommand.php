@@ -64,6 +64,6 @@ class ModelMakeCommand extends Command
     public function handle()
     {
         parent::handle();
-        $this->call('levaral:generate:models');
+        $this->call('levaral:models');
     }
 }
