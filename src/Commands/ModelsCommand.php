@@ -273,6 +273,7 @@ class ModelsCommand extends Command
             if (isset($existingMethods[$reflectionMethod->getName()])
                 || !$reflectionMethod->isPublic()
                 || starts_with($reflectionMethod->getName(), '__')
+                || in_array($reflectionMethod->getName(), ['hasMacro', 'macro', 'macroCall'])
             ) {
                 continue;
             }
