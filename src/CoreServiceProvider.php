@@ -8,6 +8,7 @@ use Levaral\Core\Commands\ModelMakeCommand;
 use Levaral\Core\Commands\ModelsCommand;
 use Illuminate\Support\ServiceProvider;
 use Levaral\Core\Commands\GenerateApiJsCommand;
+use Levaral\Core\Commands\GenerateDuskTests;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -30,7 +31,8 @@ class CoreServiceProvider extends ServiceProvider
                 ModelMakeCommand::class,
                 ModelsCommand::class,
                 GenerateStructure::class,
-                MakeActionCommand::class
+                MakeActionCommand::class,
+                GenerateDuskTests::class
             ]);
         }
     }
