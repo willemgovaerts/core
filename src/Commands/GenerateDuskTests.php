@@ -93,12 +93,13 @@ class GenerateDuskTests extends command
             $namespaces[$namespace][] = $temp;
 
             $file = 'tests/Browser'.$temp['classpath']."/".$temp['name']."Test.php";
+            $url = $route->uri;
 
             if (!file_exists($file)) {
                 if (!file_exists(dirname($file))) {
                     mkdir(dirname($file), 0777, true);
                 }
-                file_put_contents($file, view('core::DuskPageTest', compact('temp', 'phpTag', 'cl'))->render());
+                file_put_contents($file, view('core::DuskPageTest', compact('temp', 'phpTag', 'cl', 'url'))->render());
             }
         }
 
