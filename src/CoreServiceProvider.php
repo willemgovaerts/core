@@ -2,6 +2,7 @@
 
 namespace Levaral\Core;
 
+use Levaral\Core\Commands\GenerateLanguageJson;
 use Levaral\Core\Commands\GenerateStructure;
 use Levaral\Core\Commands\MakeActionCommand;
 use Levaral\Core\Commands\ModelMakeCommand;
@@ -32,7 +33,8 @@ class CoreServiceProvider extends ServiceProvider
                 ModelsCommand::class,
                 GenerateStructure::class,
                 MakeActionCommand::class,
-                GenerateDuskTests::class
+                GenerateDuskTests::class,
+                GenerateLanguageJson::class
             ]);
         }
     }
