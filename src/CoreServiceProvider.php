@@ -2,6 +2,7 @@
 
 namespace Levaral\Core;
 
+use Levaral\Core\Commands\GenerateBrowserTest;
 use Levaral\Core\Commands\GenerateLanguageJson;
 use Levaral\Core\Commands\GenerateStructure;
 use Levaral\Core\Commands\GenerateTests;
@@ -34,7 +35,7 @@ class CoreServiceProvider extends ServiceProvider
                 ModelsCommand::class,
                 GenerateStructure::class,
                 MakeActionCommand::class,
-                GenerateDuskTests::class,
+                GenerateBrowserTest::class,
                 GenerateTests::class,
                 GenerateLanguageJson::class
             ]);

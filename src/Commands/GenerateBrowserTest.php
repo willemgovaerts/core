@@ -5,14 +5,14 @@ namespace Levaral\Core\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Routing\RouteCompiler;
 
-class GenerateDuskTests extends command
+class GenerateBrowserTest extends command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'levaral:generate-dusk-test';
+    protected $signature = 'levaral:generate-browser-test';
 
     /**
      * The console command description.
