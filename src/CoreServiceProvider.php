@@ -23,6 +23,7 @@ class CoreServiceProvider extends ServiceProvider
 
         $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/core'),
+            __DIR__.'/../config/frontlanguages.php' => config_path('frontlanguages.php'),
         ]);
     }
 

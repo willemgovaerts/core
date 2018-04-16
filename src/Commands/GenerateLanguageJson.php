@@ -41,16 +41,22 @@ class GenerateLanguageJson extends Command
         $languageDirectories = array_diff(scandir(resource_path('lang')), array('..', '.'));
 
         foreach($languageDirectories as $languageDirectory) {
-            $directory = resource_path('lang/' . $languageDirectory);
 
-            $files = File::allFiles($directory);
-            foreach ($files as $file) {
-                $fileName = array_last(explode("/", $file));
-                $nameKey = str_replace(".php", "", $fileName);
-                $languageArray[$languageDirectory][$nameKey] = require($file);
+            if(in_array($languageDirectory, config('frontlanguages.languages.locales'))) {
+                $directory = resource_path('lang/' . $languageDirectory);
+
+                $files = File::allFiles($directory);
+
+                foreach ($files as $file) {
+                    $fileName = array_last(explode("/", $file));
+                    $nameKey = str_replace(".php", "", $fileName);
+                    if(in_array($nameKey, config('frontlanguages.languages.groups.front')) || in_array($nameKey, config('frontlanguages.languages.groups.admin'))) {
+                        $languageArray[$languageDirectory][$nameKey] = require($file);
+                    }
+                }
+
+                $this->generateFiles(json_encode($languageArray), $languageDirectory);
             }
-
-            $this->generateFiles(json_encode($languageArray), $languageDirectory);
         }
         return true;
     }
