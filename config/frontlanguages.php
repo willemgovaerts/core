@@ -1,10 +1,11 @@
 <?php
-    return [
-        'languages' => [
-            'locales' => ['en', 'fr'],
-            'groups' => [
-                'front'=>['auth', 'validation', 'pagination'],
-                'admin'=>['', '']
-            ]
-        ],
-    ];
+
+return [
+    'languages' => [
+        'locales' => ['en', 'fr'],
+        'groups' => [
+            'front'=>['auth', 'validation', 'pagination'],
+            'admin'=>['auth']
+        ]
+    ],
+];

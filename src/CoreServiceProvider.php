@@ -21,6 +21,8 @@ class CoreServiceProvider extends ServiceProvider
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'core');
 
+        $this->mergeConfigFrom(__DIR__.'/../config/frontlanguages.php', 'frontlanguages');
+
         $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/core'),
             __DIR__.'/../config/frontlanguages.php' => config_path('frontlanguages.php'),

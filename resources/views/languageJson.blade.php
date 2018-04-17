@@ -1,1 +1,1 @@
-var {{ $languageFile }}={!! $jsonData !!};
+window.lang={!! $jsonData !!};
