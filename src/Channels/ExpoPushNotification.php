@@ -5,7 +5,7 @@ namespace Levaral\Core\Channels;
 use Illuminate\Notifications\Notification;
 use GuzzleHttp\Client;
 
-class ExpoPushNotificationChannel
+class ExpoPushNotification
 {
     protected $expoUrl = 'https://exp.host/--/api/v2/push/send';
 
