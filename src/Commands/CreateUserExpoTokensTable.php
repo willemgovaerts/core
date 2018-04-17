@@ -47,11 +47,11 @@ class CreateUserExpoTokensTable extends Command
         });
 
         //Create model for the schema-table
-        Artisan::call('make:model', ['name' => 'App\Domain\User\UserExpoTokens']);
+        Artisan::call('make:model', ['name' => 'App\Domain\User\UserExpoToken']);
 
         //Creates models for the models "UserExpoTokens"
-        Artisan::call('levaral:models', ['model'=>'App\Domain\User\UserExpoTokens']);
+        Artisan::call('levaral:models', ['model'=>'App\Domain\User\UserExpoToken']);
 
-        echo 'Tables generated successfully.';
+        echo "Table generated successfully.\n";
     }
 }
