@@ -4,6 +4,7 @@ namespace Levaral\Core\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 
 class CreateUserExpoTokensTable extends Command
 {
@@ -44,6 +45,12 @@ class CreateUserExpoTokensTable extends Command
             $table->string('expo_token');
             $table->timestamps();
         });
+
+        //Create model for the schema-table
+        Artisan::call('make:model', ['name' => 'App\Domain\User\UserExpoTokens']);
+
+        //Creates models for the models "UserExpoTokens"
+        Artisan::call('levaral:models', ['model'=>'App\Domain\User\UserExpoTokens']);
 
         echo 'Tables generated successfully.';
     }
