@@ -19,15 +19,16 @@ class ExpoPushNotification
     public function send($notifiable, Notification $notification)
     {
         $message = $notification->toExpoPush($notifiable);
-
         $content = [];
+
         if (!isset($message['to'])) {
             foreach ($notifiable->expoTokens() as $token) {
-                $content[] = ['to' => $token, 'body' => $message['message']];
+                $content[] = array_merge(['to' => $token], $message);
             }
         } else {
             $content = $message;
         }
+
         // Send notification to the $notifiable instance...
         $client = new Client();
         $request = $client->post(self::EXPO_PUSH_URL, [
@@ -35,8 +36,7 @@ class ExpoPushNotification
             'accept-encoding' => 'gzip, deflate',
             'content-type' => 'application/json',
         ], $content);
-//        $request->setBody($message);
 
-        $response = $request->send();
+        $request->send();
     }
 }
