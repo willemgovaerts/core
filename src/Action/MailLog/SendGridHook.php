@@ -30,14 +30,14 @@ class SendGridHook extends GetAction
         $requestData = request()->all();
 
         $input = [
-            'model_id' => (int) array_get($requestData[0], 'model_id', 0),
-            'event' => array_get($requestData[0], 'event'),
-            'reason' => array_get($requestData[0], 'reason'),
-            'code' => array_get($requestData[0], 'code')
+            'model_id' => (int) array_get($requestData[1], 'model_id', 0),
+            'event' => array_get($requestData[1], 'event'),
+            'reason' => array_get($requestData[1], 'reason'),
+            'code' => array_get($requestData[1], 'code')
         ];
 
         $mailLogDTO = new MailLogDTO($input);
-
+        
         if (!$mailLogDTO->model_id) {
             return;
         }
