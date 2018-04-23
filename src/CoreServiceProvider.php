@@ -3,6 +3,7 @@
 namespace Levaral\Core;
 
 use Levaral\Core\Commands\CreateMailLogsTable;
+use Levaral\Core\Commands\CreateMailTemplateTables;
 use Levaral\Core\Commands\CreateUserExpoTokensTable;
 use Levaral\Core\Commands\GenerateBrowserTest;
 use Levaral\Core\Commands\GenerateLanguageJson;
@@ -14,6 +15,7 @@ use Levaral\Core\Commands\ModelsCommand;
 use Illuminate\Support\ServiceProvider;
 use Levaral\Core\Commands\GenerateApiJsCommand;
 use Levaral\Core\Commands\GenerateDuskTests;
+use Levaral\Core\Commands\UpdateMailTemplates;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -43,7 +45,9 @@ class CoreServiceProvider extends ServiceProvider
                 GenerateTests::class,
                 GenerateLanguageJson::class,
                 CreateUserExpoTokensTable::class,
-                CreateMailLogsTable::class
+                CreateMailLogsTable::class,
+                CreateMailTemplateTables::class,
+                UpdateMailTemplates::class
             ]);
         }
     }
