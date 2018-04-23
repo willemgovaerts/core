@@ -3,7 +3,8 @@
 namespace Levaral\Core\Action\MailLog;
 
 use App\Http\Actions\GetAction;
-use Levaral\Core\Action\MailLog\MailWebHookService;
+use Levaral\Core\Action\Services\MailWebHookService;
+use Levaral\Core\DTO\MailLogDTO;
 
 class SendGridHook extends GetAction
 {
@@ -26,10 +27,21 @@ class SendGridHook extends GetAction
 
     public function execute()
     {
-        if (!request()->get('model_id')) {
+        $requestData = request()->all();
+
+        $input = [
+            'model_id' => (int) array_get($requestData[0], 'model_id', 0),
+            'event' => array_get($requestData[0], 'event'),
+            'reason' => array_get($requestData[0], 'reason'),
+            'code' => array_get($requestData[0], 'code')
+        ];
+
+        $mailLogDTO = new MailLogDTO($input);
+
+        if (!$mailLogDTO->model_id) {
             return;
         }
 
-        return $this->mailWebHookService->store(request()->all());
+        return $this->mailWebHookService->create($mailLogDTO);
     }
 }

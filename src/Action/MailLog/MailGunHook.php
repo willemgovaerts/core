@@ -3,7 +3,8 @@
 namespace Levaral\Core\Action\MailLog;
 
 use App\Http\Actions\GetAction;
-use Levaral\Core\Action\MailLog\MailWebHookService;
+use Levaral\Core\Action\Services\MailWebHookService;
+use Levaral\Core\DTO\MailLogDTO;
 
 class MailGunHook extends GetAction
 {
@@ -26,10 +27,19 @@ class MailGunHook extends GetAction
 
     public function execute()
     {
-        if (!request()->get('model_id')) {
+        $input = [
+            'model_id' => (int) request()->get('model_id', 0),
+            'event' => request()->get('event'),
+            'reason' => request()->get('reason'),
+            'code' => request()->get('code')
+        ];
+
+        $mailLogDTO = new MailLogDTO($input);
+
+        if (!$mailLogDTO->model_id) {
             return;
         }
 
-        return $this->mailWebHookService->store(request()->all());
+        return $this->mailWebHookService->create($mailLogDTO);
     }
 }
