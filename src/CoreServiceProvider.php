@@ -2,6 +2,7 @@
 
 namespace Levaral\Core;
 
+use Levaral\Core\Commands\CreateMailLogsTable;
 use Levaral\Core\Commands\CreateUserExpoTokensTable;
 use Levaral\Core\Commands\GenerateBrowserTest;
 use Levaral\Core\Commands\GenerateLanguageJson;
@@ -41,7 +42,8 @@ class CoreServiceProvider extends ServiceProvider
                 MakeActionCommand::class,
                 GenerateTests::class,
                 GenerateLanguageJson::class,
-                CreateUserExpoTokensTable::class
+                CreateUserExpoTokensTable::class,
+                CreateMailLogsTable::class
             ]);
         }
     }
