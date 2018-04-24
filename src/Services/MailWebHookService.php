@@ -29,23 +29,24 @@ class MailWebHookService
         if (!$mailLogs) {
             return;
         }
+
         $reason = $mailLogDTO->reason . '-' . $mailLogDTO->code;
 
         $now = \Carbon\Carbon::now();
 
         if ($mailLogDTO->event == self::DELIVERED || $mailLogDTO->event == self::PROCESSED) {
             $mailLogs->mail_sent_at = $now;
-        } else if ($mailLogDTO->event == self::OPENED || $mailLogDTO->event == self::OPEN) {
+        } elseif ($mailLogDTO->event == self::OPENED || $mailLogDTO->event == self::OPEN) {
             $mailLogs->mail_opened_at = $now;
-        } else if ($mailLogDTO->event == self::CLICKED || $mailLogDTO->event == self::CLICK) {
+        } elseif ($mailLogDTO->event == self::CLICKED || $mailLogDTO->event == self::CLICK) {
             $mailLogs->mail_clicked_at = $now;
-        } else if ($mailLogDTO->event == self::UNSUBSCRIBED || $mailLogDTO->event == self::UNSUBSCRIBE) {
+        } elseif ($mailLogDTO->event == self::UNSUBSCRIBED || $mailLogDTO->event == self::UNSUBSCRIBE) {
             $mailLogs->mail_unsubscribed_at = $now;
-        } else if ($mailLogDTO->event == self::COMPLAINED) {
+        } elseif ($mailLogDTO->event == self::COMPLAINED) {
             $mailLogs->mail_complained_at = $now;
-        } else if ($mailLogDTO->event == self::STORED) {
+        } elseif ($mailLogDTO->event == self::STORED) {
             $mailLogs->mail_stored_at = $now;
-        } else if ($mailLogDTO->event == self::DROPPED
+        } elseif ($mailLogDTO->event == self::DROPPED
             || $mailLogDTO->event == self::BOUNCED
             || $mailLogDTO->event == self::BOUNC
             || $mailLogDTO->event == self::FAILED) {
