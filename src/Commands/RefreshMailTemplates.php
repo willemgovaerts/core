@@ -5,14 +5,14 @@ namespace Levaral\Core\Commands;
 use Illuminate\Console\Command;
 use Levaral\Core\Services\MailTemplateService;
 
-class UpdateMailTemplates extends Command
+class RefreshMailTemplates extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'levaral:update:mailtemplates';
+    protected $signature = 'levaral:refresh:mailtemplates';
 
     /**
      * The console command description.
@@ -41,6 +41,6 @@ class UpdateMailTemplates extends Command
      */
     public function handle()
     {
-        $this->mailTemplateService->createMailTemplates();
+        $this->mailTemplateService->createMailTemplateByLocals();
     }
 }

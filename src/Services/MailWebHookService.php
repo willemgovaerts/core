@@ -1,6 +1,6 @@
 <?php
 
-namespace Levaral\Core\Action\Services;
+namespace Levaral\Core\Services;
 
 use App\Domain\MailLog\MailLog;
 use Levaral\Core\DTO\MailLogDTO;

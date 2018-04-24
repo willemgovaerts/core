@@ -15,7 +15,7 @@ use Levaral\Core\Commands\ModelsCommand;
 use Illuminate\Support\ServiceProvider;
 use Levaral\Core\Commands\GenerateApiJsCommand;
 use Levaral\Core\Commands\GenerateDuskTests;
-use Levaral\Core\Commands\UpdateMailTemplates;
+use Levaral\Core\Commands\RefreshMailTemplates;
 
 class CoreServiceProvider extends ServiceProvider
 {
@@ -47,7 +47,7 @@ class CoreServiceProvider extends ServiceProvider
                 CreateUserExpoTokensTable::class,
                 CreateMailLogsTable::class,
                 CreateMailTemplateTables::class,
-                UpdateMailTemplates::class
+                RefreshMailTemplates::class
             ]);
         }
     }

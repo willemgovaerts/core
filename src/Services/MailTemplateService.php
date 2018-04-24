@@ -4,37 +4,85 @@ namespace Levaral\Core\Services;
 
 use Illuminate\Support\Facades\File;
 use App\Domain\MailTemplate\MailTemplate;
+use App\Domain\MailTemplate\MailTemplateContent;
+use Levaral\Core\DTO\MailTemplateContentDTO;
 
 class MailTemplateService
 {
     public function createMailTemplateByLocals()
     {
-        $locales = ['en', 'fr_fr'];
+        $notificationFiles = $this->getNotificationFiles();
 
-        foreach($locales as $locale){
-            $this->createMailTemplates($locales);
+        // TODO remove template content before deleting mail templates.
+
+        // Remove all the template entries which are not in the notification files list
+        MailTemplate::query()->whereNotIn('type', $notificationFiles)->delete();
+
+        foreach ($notificationFiles as $notificationFile) {
+            $this->createMailTemplates($notificationFile);
         }
     }
 
-    public function createMailTemplates($locale = null)
+    public function createMailTemplates($notificationFile, $locale = null)
     {
-        $notificationFiles = $this->getNotificationFiles();
+        // TODO: what to do with template content if template is created new by deleting and existing one?
+        $notificationClass = 'App\\Notifications' . $notificationFile;
 
-        $mailTemplate = MailTemplate::query()->whereNotIn('type', $notificationFiles)->delete();
+        if (!class_exists($notificationClass)) {
+            return false;
+        }
 
-//        foreach($notificationFiles as $file) {
-//            if (!$mailTemplate) {
-//                $mailTemplate = new MailTemplate();
-//            }
-//
-//            $mailTemplate->setType($fileName);
-//
-//            // TODO: get locale id from locale table
-//            $mailTemplate->setLocaleId(1);
-//
-//            $mailTemplate->save();
-//        }
+        $notification = new $notificationClass();
+        $templateVariables = $notification->templateVariables;
 
+        $mailTemplate = MailTemplate::query()->firstOrCreate([
+                                                        'type'=>$notificationFile,
+                                                        'variables'=>$templateVariables
+                                                    ]);
+
+        // remove existing template content before creating new.
+        $this->removeMailTemplateContent($mailTemplate->getId());
+
+        // Get the locale directories
+        $locales = $this->getLocaleDirectories();
+        foreach ($locales as $locale) {
+            $this->createMailTemplateContent($mailTemplate->getId(), $locale);
+        }
+    }
+
+    private function removeMailTemplateContent($templateId)
+    {
+        MailTemplateContent::query()->where('mail_template_id', $templateId)->delete();
+    }
+
+    public function createMailTemplateContent(MailTemplateContentDTO $mailTemplateContentDTO)
+    {
+        $mailTemplateContent = new MailTemplateContent();
+
+        if (!empty($mailTemplateContentDTO->locale_code)) {
+            $mailTemplateContent->setLocaleCode($mailTemplateContentDTO->locale_code);
+        }
+
+        if (!empty($mailTemplateContentDTO->mail_template_id)) {
+            $mailTemplateContent->setMailTemplateId($mailTemplateContentDTO->mail_template_id);
+        }
+
+        if (!empty($mailTemplateContentDTO->subject)) {
+            $mailTemplateContent->setSubject($mailTemplateContentDTO->subject);
+        }
+
+        if (!empty($mailTemplateContentDTO->content)) {
+            $mailTemplateContent->setContent($mailTemplateContentDTO->content);
+        }
+
+        $mailTemplateContent->save();
+
+        return $mailTemplateContent;
+    }
+
+    private function getLocaleDirectories()
+    {
+        return array_diff(scandir(resource_path('lang')), array('..', '.'));
     }
 
     public function getNotificationFiles()

@@ -11,5 +11,23 @@ namespace Levaral\Core\DTO;
 
 class MailTemplateContentDTO
 {
+    /**
+     * @var string
+     */
+    public $locale_code;
 
+    /**
+     * @var integer
+     */
+    public $mail_template_id;
+
+    /**
+     * @var string
+     */
+    public $subject;
+
+    /**
+     * @var string
+     */
+    public $content;
 }

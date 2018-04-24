@@ -40,16 +40,15 @@ class CreateMailTemplateTables extends Command
      */
     public function handle()
     {
-        $this->createLocalesTable();
+//        $this->createLocalesTable();
         $this->createMailTemplatesTable();
         $this->createMailTemplateContentsTable();
 
         //Creates models
-        /*        Artisan::call('levaral:models', [
-                                                    'model'=>'App\Domain\Locales\Locales',
-                                                    'model'=>'App\Domain\MailTemplate\MailTemplates',
-                                                    'model'=>'App\Domain\MailTemplate\MailTemplateContents',
-                                                ]);*/
+        Artisan::call('levaral:models', [
+                                            'model'=>'App\Domain\MailTemplate\MailTemplates',
+                                            'model'=>'App\Domain\MailTemplate\MailTemplateContents',
+                                        ]);
 
         $this->info('Table generated successfully.');
     }
@@ -71,7 +70,6 @@ class CreateMailTemplateTables extends Command
             $table->increments('id');
             $table->string('type')->nullable();
             $table->text('variables')->nullable();
-            $table->unsignedInteger('locale_id')->nullable();
             $table->softDeletes();
             $table->timestamps();
         });
@@ -81,6 +79,7 @@ class CreateMailTemplateTables extends Command
     {
         Schema::create('mail_template_contents', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('locale_code')->nullable();
             $table->unsignedInteger('mail_template_id');
             $table->text('subject')->nullable();
             $table->text('content')->nullable();

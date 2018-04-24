@@ -3,7 +3,7 @@
 namespace Levaral\Core\Action\MailLog;
 
 use App\Http\Actions\PostAction;
-use Levaral\Core\Action\Services\MailWebHookService;
+use Levaral\Core\Services\MailWebHookService;
 use Levaral\Core\DTO\MailLogDTO;
 
 class PostMailGunHook extends PostAction

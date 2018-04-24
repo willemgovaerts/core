@@ -14,9 +14,4 @@ class MailTemplateDTO
      * @var string
      */
     public $variables;
-
-    /**
-     * @var integer
-     */
-    public $locale_id;
 }
