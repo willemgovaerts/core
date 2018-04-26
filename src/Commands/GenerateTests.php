@@ -1,4 +1,5 @@
 <?php
+
 namespace Levaral\Core\Commands;
 
 use Illuminate\Console\Command;
@@ -19,7 +20,7 @@ class GenerateTests extends command
      *
      * @var string
      */
-    protected $description = 'To generate test classed for api actions';
+    protected $description = 'To generate test classes for api actions';
 
     /**
      * Create a new command instance.
@@ -42,13 +43,16 @@ class GenerateTests extends command
         $p = [];
         foreach (app('router')->getRoutes() as $route) {
             $compiledRoute = (new RouteCompiler($route))->compile();
+
             if (substr($route->uri, 0, 3) !== 'api'
                 || !isset($route->action['controller']) || !$compiledRoute) {
                 continue;
             }
+
             $action = $route->action;
             $parts = explode('Actions\\', $action['controller']);
             $p[] = $parts;
+
             if (count($parts) < 2) {
                 continue;
             }
@@ -60,7 +64,6 @@ class GenerateTests extends command
             }
 
             $namespaces = $this->generateFiles($route, $actionArray, $namespaces, "");
-
         }
 
         return $namespaces;
@@ -71,32 +74,33 @@ class GenerateTests extends command
         $namespace = $actionArray[0];
         $method = $actionArray[1];
 
-
-        if (count($actionArray) > 2){
+        if (count($actionArray) > 2) {
             array_shift($actionArray);
-            if (!array_key_exists($namespace, $namespaces)){
+
+            if (!array_key_exists($namespace, $namespaces)) {
                 $namespaces[$namespace] = [];
             }
-            $classpath = $classpath."/".$namespace;
-            $namespaces[$namespace] = $this->generateFiles($route, $actionArray, $namespaces[$namespace], $classpath);
-        }
 
-        else{
+            $classpath = $classpath . "/" . $namespace;
+            $namespaces[$namespace] = $this->generateFiles($route, $actionArray, $namespaces[$namespace], $classpath);
+        } else {
             $temp = [
                 'method' => strtolower($route->methods[0]),
                 'name' => $method,
                 'path' => str_replace('?', '', str_replace('{', '${', $route->uri)),
-                'classpath' => $classpath."/".$namespace,
+                'classpath' => $classpath . "/" . $namespace,
                 'routeName' => $route->action['as'],
             ];
+
             $namespaces[$namespace][] = $temp;
 
-            $file = 'tests/Feature'.$temp['classpath']."/".$temp['name']."Test.php";
+            $file = 'tests/Feature' . $temp['classpath'] . "/" . $temp['name'] . "Test.php";
 
-            if (!file_exists($file)){
-                if(!file_exists(dirname($file))){
+            if (!file_exists($file)) {
+                if (!file_exists(dirname($file))) {
                     mkdir(dirname($file), 0777, true);
                 }
+
                 file_put_contents($file, view('core::testClass', compact('temp'))->render());
             }
         }
