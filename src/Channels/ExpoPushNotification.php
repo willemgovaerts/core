@@ -23,8 +23,8 @@ class ExpoPushNotification
         $content = [];
 
         if (!isset($message['to'])) {
-            foreach ($notifiable->expoTokens() as $token) {
-                $content[] = array_merge(['to' => $token], $message);
+            foreach ($notifiable->userExpoTokens() as $token) {
+                $content[] = array_merge(['to' => $token->token], $message);
             }
         } else {
             $content = $message;

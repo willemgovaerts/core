@@ -42,7 +42,7 @@ class CreateUserExpoTokensTable extends Command
         Schema::create('user_expo_tokens', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            $table->string('expo_token');
+            $table->string('token');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
