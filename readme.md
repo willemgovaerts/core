@@ -56,7 +56,7 @@ levaral:user-expo-tokens
 
 ## Notification Channels
 
-####ExpoPushNotification
+#### ExpoPushNotification
 add `toExpo` to your notification class for e.g
 ```php
 function toExpo()
