@@ -39,7 +39,6 @@ class CoreServiceProvider extends ServiceProvider
                 ModelsCommand::class,
                 GenerateStructure::class,
                 MakeActionCommand::class,
-                GenerateBrowserTest::class,
                 GenerateTests::class,
                 GenerateLanguageJson::class,
                 CreateUserExpoTokensTable::class
