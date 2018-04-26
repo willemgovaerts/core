@@ -2,7 +2,7 @@
 
 return [
     'languages' => [
-        'locales' => ['en', 'fr'],
+        'locales' => ['en'],
         'groups' => [
             'front'=>['auth', 'validation', 'pagination'],
             'admin'=>['auth']

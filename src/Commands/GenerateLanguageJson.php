@@ -38,7 +38,6 @@ class GenerateLanguageJson extends Command
      */
     public function handle()
     {
-        $languages = [];
         $languageDirectories = array_diff(scandir(resource_path('lang')), array('..', '.'));
 
         foreach ($languageDirectories as $languageDirectory) {
@@ -46,23 +45,20 @@ class GenerateLanguageJson extends Command
                 continue;
             }
 
-            $directory = resource_path('lang/' . $languageDirectory);
-            $files = File::allFiles($directory);
+            foreach (config('frontlanguages.languages.groups') as $groupName => $group) {
+                $languages = [];
+                foreach ($group as $languageFile) {
+                    $langFilePath = resource_path('lang/' . $languageDirectory.'/'.$languageFile.'.php');
 
-            foreach ($files as $file) {
-                $fileName = str_replace(".".pathinfo($file->getFileName(), PATHINFO_EXTENSION),
-                    '', $file->getFileName());
-
-                foreach (config('frontlanguages.languages.groups') as $groupName => $group) {
-                    foreach ($group as $languageFile) {
-                        if ($languageFile !==  $fileName) {
-                            continue;
-                        }
-
-                        $languages[$fileName] = require($file);
-                        $this->generateFiles(json_encode($languages), $groupName.'-'.$languageDirectory);
+                    if (!file_exists($langFilePath)) {
+                        continue;
                     }
+
+                    $fileName = basename($langFilePath);
+                    $fileNameWithoutExtension = str_replace(".".pathinfo($fileName, PATHINFO_EXTENSION), '', $fileName);
+                    $languages[$fileNameWithoutExtension] = require($langFilePath);
                 }
+                $this->generateFiles(json_encode($languages), $groupName.'-'.$languageDirectory);
             }
         }
     }

@@ -44,6 +44,8 @@ class CreateUserExpoTokensTable extends Command
             $table->unsignedInteger('user_id');
             $table->string('expo_token');
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         //Create model for the schema-table
@@ -52,6 +54,6 @@ class CreateUserExpoTokensTable extends Command
         //Creates models for the models "UserExpoTokens"
         Artisan::call('levaral:models', ['model'=>'App\Domain\User\UserExpoToken']);
 
-        echo "Table generated successfully.\n";
+        $this->info('Table user_expo_tokens created successfully.');
     }
 }
