@@ -19,7 +19,7 @@ class ExpoPushNotification
      */
     public function send($notifiable, Notification $notification)
     {
-        $message = $notification->toExpoPush($notifiable);
+        $message = $notification->toExpo($notifiable);
         $content = [];
 
         if (!isset($message['to'])) {
