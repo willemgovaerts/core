@@ -23,7 +23,7 @@ class GetEdit extends GetAction
         return [];
     }
 
-    public function execute($templateId)
+    public function execute($templateId, $localeCode='en')
     {
         $mailTemplate = MailTemplate::query()->find($templateId);
         $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
@@ -33,10 +33,13 @@ class GetEdit extends GetAction
             return redirect()->route('MailTemplate.GetList');
         }
 
+        // Get the locale directories
+        $locales = array_diff(scandir(resource_path('lang')), array('..', '.'));
+
         $notification = new $notificationClass();
 
-        $templateVariables = $notification->templateVariables;
+        $templateVariables = (!empty($notification->templateVariables)) ? $notification->templateVariables : '';
 
-        return view('vendor.core.MailTemplate.form', compact('mailTemplate', 'templateVariables'));
+        return view('vendor.core.MailTemplate.form', compact('mailTemplate', 'templateVariables', 'locales', 'templateId', 'localeCode'));
     }
 }

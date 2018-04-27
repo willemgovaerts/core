@@ -9,7 +9,7 @@
 namespace Levaral\Core\DTO;
 
 
-class MailTemplateContentDTO
+class MailTemplateContentDTO extends BaseDTO
 {
     /**
      * @var string

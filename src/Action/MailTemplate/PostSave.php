@@ -36,10 +36,14 @@ class PostSave extends PostAction
         ];
     }
 
-    public function execute()
+    public function execute($templateId = null, $locale = 'en')
     {
-        $mailTemplateContentDTO = new MailTemplateContentDTO($this->request->data());
+        $mailTemplateContentDTO = new MailTemplateContentDTO($this->data());
+        $mailTemplateContentDTO->mail_template_id = $templateId;
+        $mailTemplateContentDTO->locale_code = $locale;
 
-        return $this->mailWebHookService->create($mailTemplateContentDTO);
+        $this->mailTemplateService->createMailTemplateContent($mailTemplateContentDTO);
+
+        return redirect()->route('MailTemplate.GetList');
     }
 }
