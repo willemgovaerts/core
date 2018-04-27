@@ -14,7 +14,7 @@ class MailTemplateContentDTO extends BaseDTO
     /**
      * @var string
      */
-    public $locale_code;
+    public $locale;
 
     /**
      * @var integer

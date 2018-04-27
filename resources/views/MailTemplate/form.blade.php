@@ -1,52 +1,69 @@
-<div class="row">
-    <div class="col-md-12">
-        @foreach($locales as $locale)
-            <a href="{{ route('MailTemplate.GetEdit', ['id'=>$templateId, 'locale'=>$locale]) }}" class="btn btn-primary">{{ $locale }}</a>
-        @endforeach
+@extends('layouts.app')
+@section('content')
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">{{ __('app.register.title') }}</div>
+
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            @foreach($locales as $locale)
+                                <a href="{{ route('MailTemplate.GetEdit', ['id'=>$templateId, 'locale'=>$locale]) }}" class="btn btn-primary">{{ $locale }}</a>
+                            @endforeach
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostSave', ['id'=>$templateId, 'locale'=>$localeCode]) }}">
+                                <input type="hidden" name="locale" value="{{ $localeCode }}" />
+                                {{ csrf_field() }}
+                                @foreach($errors as $error)
+                                    <p>{{ $error }}</p>
+                                @endforeach
+                                <div class="row form-group">
+                                    <label class="control-label col-md-3">Subject</label>
+                                    <div class="col-md-9">
+                                        <input type="text" class="form-control" name="subject" value="" />
+                                        {{ $errors->first('subject') }}
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="control-label col-md-3">Content</label>
+                                    <div class="col-md-9">
+                                        <textarea rows="4" col="80" id="content" name="content" class="form-control"></textarea>
+                                        {{ $errors->first('content') }}
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <label class="control-label col-md-3">Variables</label>
+                                    <div class="col-md-9">
+                                        <ul class="list-inline">
+                                        @foreach($templateVariables as $templateVariable)
+                                            <li class="btn btn-primary tags" data-tag="[{{ $templateVariable }}]">{{ $templateVariable }}</li>
+                                        @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="row form-group">
+                                    <div class="col-md-12 text-center">
+                                        <input type="submit" value="save" class="btn btn-success" />
+                                        <a href="{{ route('MailTemplate.GetList') }}" class="btn btn-default">Cancel</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
-        <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostSave', ['id'=>$templateId, 'locale'=>$locale_code]) }}">
-            <input type="hidden" name="locale" value="{{ $locale_code }}" />
-            {{ csrf_field() }}
-            <div class="row form-group">
-                <label class="control-label col-md-3">Type</label>
-                <div class="col-md-9">
-                    <input type="text" class="form-control" name="type" value="" />
-                </div>
-            </div>
-            @foreach($errors as $error)
-                <p>{{ $error }}</p>
-            @endforeach
-            <div class="row form-group">
-                <label class="control-label col-md-3">Subject</label>
-                <div class="col-md-9">
-                    <input type="text" class="form-control" name="subject" value="" />
-                    {{ $errors->first('subject') }}
-                </div>
-            </div>
-            <div class="row form-group">
-                <label class="control-label col-md-3">Content</label>
-                <div class="col-md-9">
-                    <textarea rows="4" col="80" name="content" class="form-control"></textarea>
-                    {{ $errors->first('content') }}
-                </div>
-            </div>
-            <div class="row form-group">
-                <label class="control-label col-md-3">Variables</label>
-                <div class="col-md-9">
-                    @foreach($templateVariables as $templateVariable)
-                        <span data-tag="[{{ $templateVariable }}]">{{ $templateVariable }}</span>
-                    @endforeach
-                </div>
-            </div>
-            <div class="row form-group">
-                <div class="col-md-12 text-center">
-                    <input type="submit" value="save" class="btn btn-success" />
-                    <a href="{{ route('MailTemplate.GetList') }}" class="btn btn-default">Cancel</a>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
+@endsection
+@push('body-js')
+    <script>
+        $('.tags').on('click', function() {
+            let val = $('#content').val();
+            $('#content').val( val + ' ' + $(this).data('tag'));
+        });
+    </script>
+@endpush

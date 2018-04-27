@@ -38,7 +38,7 @@ class GetEdit extends GetAction
 
         $notification = new $notificationClass();
 
-        $templateVariables = (!empty($notification->templateVariables)) ? $notification->templateVariables : '';
+        $templateVariables = (!empty($notification->templateVariables)) ? array_keys($notification->templateVariables) : '';
 
         return view('vendor.core.MailTemplate.form', compact('mailTemplate', 'templateVariables', 'locales', 'templateId', 'localeCode'));
     }

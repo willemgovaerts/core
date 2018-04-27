@@ -1,4 +1,5 @@
-
+@extends('layouts.app')
+@section('content')
 <table class="table table-responsive">
     <thead>
         <tr>
@@ -15,9 +16,9 @@
             <td>
                 <a href="{{ route('MailTemplate.GetEdit', ['id'=>$mailTemplate->getId()] }}" class="btn btn-default">Edit</a>
                 <a href="{{ route('MailTemplate.GetPreview', ['id'=>$mailTemplate->getId()] }}" class="btn btn-default">Preview</a>
-                <a href="{{ route('MailTemplate.GetDelete', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-danger">Delete</a>
             </td>
         </tr>
     @endforeach
     </tbody>
 </table>
+@endsection

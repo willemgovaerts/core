@@ -1,6 +1,7 @@
 <?php
 namespace Levaral\Core\Action\MailTemplate;
 
+use App\Domain\MailTemplate\MailTemplate;
 use App\Http\Actions\GetAction;
 
 class GetPreview extends GetAction
@@ -20,14 +21,23 @@ class GetPreview extends GetAction
         return [];
     }
 
-    public function execute($className)
+    public function execute($templateId)
     {
-        $class = 'App\\Notifications\\' . $className;
-        $notification = $class::preview();
+        $mailTemplate = MailTemplate::query()->find($templateId);
+        $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
+        $notification = $notificationClass::preview();
         $message = $notification->toMail($this->user());
+        $mailTemplate = $this->getTemplate($mailTemplate, $notification);
+        return view('vendor.notifications.email', compact('mailTemplate'));
+    }
 
-        $markdown = new \Illuminate\Mail\Markdown(view(), config('mail.markdown'));
-
-        return $markdown->render('vendor.notifications.email', $message->toArray());
+    public function getTemplate($mailTemplate, $notification)
+    {
+        $mailContent = $mailTemplate->content->where('locale_code', 'en')->first();
+        $mailTemplateVariable = $notification->getTemplateVariables($notification);
+        $output = str_replace(array_keys($mailTemplateVariable), array_values($mailTemplateVariable), $mailContent->content);
+        $output = str_replace(['[', ']'], ' ' , $output);
+        $mailTemplate->content->content = $mailContent->content = $output;
+        return $mailTemplate;
     }
 }

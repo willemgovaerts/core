@@ -80,7 +80,7 @@ class CreateMailTemplateTables extends Command
     {
         Schema::create('mail_template_contents', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('locale_code')->nullable();
+            $table->string('locale')->nullable();
             $table->unsignedInteger('mail_template_id');
             $table->text('subject')->nullable();
             $table->text('content')->nullable();
