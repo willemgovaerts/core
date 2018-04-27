@@ -30,7 +30,7 @@
                 <label class="control-label col-md-3">Variables</label>
                 <div class="col-md-9">
                     @foreach($templateVariables as $templateVariable)
-                        <span>{{ $templateVariable }}</span>
+                        <span data-tag="[{{ $templateVariable }}]">{{ $templateVariable }}</span>
                     @endforeach
                 </div>
             </div>

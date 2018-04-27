@@ -26,7 +26,7 @@ class MailTemplateService
     public function createMailTemplates($notificationFile, $locale = null)
     {
         // TODO: what to do with template content if template is created new by deleting and existing one?
-        $notificationClass = 'App\\Notifications' . $notificationFile;
+        $notificationClass = 'App\\Notifications\\' . $notificationFile;
 
         if (!class_exists($notificationClass)) {
             return false;
@@ -35,10 +35,9 @@ class MailTemplateService
         $notification = new $notificationClass();
         $templateVariables = $notification->templateVariables;
 
-        $mailTemplate = MailTemplate::query()->firstOrCreate([
-                                                        'type'=>$notificationFile,
-                                                        'variables'=>$templateVariables
-                                                    ]);
+        $mailTemplate = MailTemplate::query()->firstOrNew(['type' => $notificationFile]);
+        $mailTemplate->variables = json_encode($templateVariables);
+        $mailTemplate->save();
 
         // remove existing template content before creating new.
         $this->removeMailTemplateContent($mailTemplate->getId());
@@ -46,7 +45,10 @@ class MailTemplateService
         // Get the locale directories
         $locales = $this->getLocaleDirectories();
         foreach ($locales as $locale) {
-            $this->createMailTemplateContent($mailTemplate->getId(), $locale);
+            $mailTemplateContentDTO = new MailTemplateContentDTO();
+            $mailTemplateContentDTO->locale_code = $locale;
+            $mailTemplateContentDTO->mail_template_id = $mailTemplate->getId();
+            $this->createMailTemplateContent($mailTemplateContentDTO);
         }
     }
 
