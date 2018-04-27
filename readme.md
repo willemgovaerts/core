@@ -116,3 +116,27 @@ function toExpo()
 
 If you include `to` in above array then the notification will be send to only that particular device, if not then it will send 
 the notifications to only that notifiable object devices, which are in the `user_expo_tokens` table
+
+##  MailLogs
+Maillogs will track your all out going mail and sent, opened and clicked events. For now it supports only
+Mailgun and Sendgrid
+
+Run following command to create maillog table
+
+```php
+levaral:maillog:table
+```
+
+Add action route to laravel route file.
+
+```php
+Action::post('mailgun-webhook', Laravel\Core\Action\MailLog\PostMailGunHook::class); // route for mailgun webhook
+Action::post('sendgrid-webhook', Laravel\Core\Action\MailLog\PostSendGridHook::class); // route for sendgrid webhook
+```
+
+To send mail notification with maillog history.
+
+```php
+Util::notify($notifiable, $notificationObject, $model)
+```
+

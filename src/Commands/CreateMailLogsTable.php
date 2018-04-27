@@ -20,7 +20,7 @@ class CreateMailLogsTable extends Command
      *
      * @var string
      */
-    protected $description = 'Creates maillog table for log notifications.';
+    protected $description = 'Create maillog table for log notifications.';
 
     /**
      * Create a new command instance.
