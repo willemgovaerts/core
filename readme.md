@@ -54,6 +54,12 @@ push notifications. This package also has expo push notification channel i.e `Ex
 levaral:user-expo-tokens
 ```
 
+This command will generate language files for frontend
+
+```
+levaral:generate-language-json
+```
+
 ## Notification Channels
 
 #### ExpoPushNotification
