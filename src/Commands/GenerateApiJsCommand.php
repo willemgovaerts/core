@@ -58,8 +58,12 @@ class GenerateApiJsCommand extends Command
             $method = $actionArray[0];
             $params = $compiledRoute->getVariables();
             array_push($params, 'formData');
+            $methodName = strtolower($route->methods[0]);
+            if ($methodName === 'post') {
+                $params[] = 'callback';
+            }
             $namespaces[$namespace][] = [
-                'method' => strtolower($route->methods[0]),
+                'method' => $methodName,
                 'name' => $method,
                 'params' => $params,
                 'path' => str_replace('?', '', str_replace('{', '${', $route->uri))
