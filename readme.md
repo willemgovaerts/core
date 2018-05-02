@@ -60,23 +60,6 @@ This command will generate language files for frontend
 levaral:generate-language-json
 ```
 
-## Notification Channels
-
-#### ExpoPushNotification
-add `toExpo` to your notification class for e.g
-```php
-function toExpo()
-{
-    return [
-        'body' => 'Test Message'
-    ];
-}
-```
-
-If you include `to` in above array then the notification will be send to only that particular device, if not then it will send 
-the notifications to only that notifiable object devices, which are in the `user_expo_tokens` table
-
-
 ## Action Routes
 
 Action routes can be defined in any laravel route files like (web.php, api.php etc..), when using
@@ -91,3 +74,45 @@ Action::post('get-detail', \App\Http\Actions\User\PostDetail::class); // route n
 Action::post('get-detail', \App\Http\Actions\User\Profile\GetDetail::class); // route name User:Profile:PostDetail
 ```
 
+## Notification Channels
+
+#### MailChannel
+Laravel already providing the mail channel, Levaral mail channel extends the Laravel mail channel and provide some 
+more feature. Levaral mail channel will track the mail logs like sent, opened, clicked, failed etc.. For now 
+Levaral mail channel only support the mail logs of Mailgun and Sendgrid
+
+###### How to install
+
+Run following command to generate mail log table and MailLog model
+```
+levaral:maillog:table
+``` 
+
+To use Levaral mail channel add following code in `register` method of `Providers\AppServiceProvider.php`. That's it now your all mail notifications
+will use Levaral Core MailChannel
+```php
+$this->app->bind(
+    \Illuminate\Notifications\Channels\MailChannel::class,
+    \Levaral\Core\Channels\MailChannel::class
+);
+```
+
+Register routes for MailGun or Sendgrid web hook, you need to except those routs in `VerifyCsrfToken` middleware 
+```php
+Action::post('/mailgun-webhook', Levaral\Core\Action\MailLog\PostMailGunHook::class);
+Action::post('/sendgrid-webhook', Levaral\Core\Action\MailLog\PostSendGridHook::class);
+```
+
+#### ExpoPushNotification
+add `toExpo` to your notification class for e.g
+```php
+function toExpo()
+{
+    return [
+        'body' => 'Test Message'
+    ];
+}
+```
+
+If you include `to` in above array then the notification will be send to only that particular device, if not then it will send 
+the notifications to only that notifiable object devices, which are in the `user_expo_tokens` table
