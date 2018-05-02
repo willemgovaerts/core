@@ -79,12 +79,16 @@ class MailChannel extends \Illuminate\Notifications\Channels\MailChannel
 
         if (isset($notifiable->model_id)) {
             $headers = $mailMessage->getHeaders();
-            $headers->addTextHeader('X-Mailgun-Variables', json_encode(['model_id' => $notifiable->model_id]));
-            $headers->addTextHeader('X-SMTPAPI', json_encode([
-                'unique_args' => [
-                    'model_id' => $notifiable->model_id
-                ]
-            ]));
+
+            if (config('mail.driver') === 'mailgun') {
+                $headers->addTextHeader('X-Mailgun-Variables', json_encode(['model_id' => $notifiable->model_id]));
+            } elseif (config('mail.driver') === 'sendgrid') {
+                $headers->addTextHeader('X-SMTPAPI', json_encode([
+                    'unique_args' => [
+                        'model_id' => $notifiable->model_id
+                    ]
+                ]));
+            }
         }
     }
 }
