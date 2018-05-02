@@ -62,7 +62,7 @@
 @push('body-js')
     <script>
         $('.tags').on('click', function() {
-            let val = $('#content').val();
+            var val = $('#content').val();
             $('#content').val( val + ' ' + $(this).data('tag'));
         });
     </script>

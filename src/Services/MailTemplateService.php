@@ -33,22 +33,25 @@ class MailTemplateService
         }
 
         $notification = new $notificationClass();
-        $templateVariables = $notification->templateVariables;
+        if (!empty($notification->templateVariables)) {
+            $templateVariables = $notification->templateVariables;
 
-        $mailTemplate = MailTemplate::query()->firstOrNew(['type' => $notificationFile]);
-        $mailTemplate->variables = json_encode($templateVariables);
-        $mailTemplate->save();
+            $mailTemplate = MailTemplate::query()->firstOrNew(['type' => $notificationFile]);
+            $mailTemplate->variables = json_encode($templateVariables);
+            $mailTemplate->save();
 
-        // remove existing template content before creating new.
-        $this->removeMailTemplateContent($mailTemplate->getId());
+            // remove existing template content before creating new.
+            $this->removeMailTemplateContent($mailTemplate->getId());
 
-        // Get the locale directories
-        $locales = $this->getLocaleDirectories();
-        foreach ($locales as $locale) {
-            $mailTemplateContentDTO = new MailTemplateContentDTO();
-            $mailTemplateContentDTO->locale_code = $locale;
-            $mailTemplateContentDTO->mail_template_id = $mailTemplate->getId();
-            $this->createMailTemplateContent($mailTemplateContentDTO);
+            // Get the locale directories
+            $locales = $this->getLocaleDirectories();
+
+            foreach ($locales as $locale) {
+                $mailTemplateContentDTO = new MailTemplateContentDTO([]);
+                $mailTemplateContentDTO->locale = $locale;
+                $mailTemplateContentDTO->mail_template_id = $mailTemplate->getId();
+                $this->createMailTemplateContent($mailTemplateContentDTO);
+            }
         }
     }
 
@@ -66,8 +69,8 @@ class MailTemplateService
             $mailTemplateContent = new MailTemplateContent();
         }
 
-        if (!empty($mailTemplateContentDTO->locale_code)) {
-            $mailTemplateContent->setLocaleCode($mailTemplateContentDTO->locale_code);
+        if (!empty($mailTemplateContentDTO->locale)) {
+            $mailTemplateContent->setLocale($mailTemplateContentDTO->locale);
         }
 
         if (!empty($mailTemplateContentDTO->mail_template_id)) {

@@ -40,7 +40,7 @@ class PostSave extends PostAction
     {
         $mailTemplateContentDTO = new MailTemplateContentDTO($this->data());
         $mailTemplateContentDTO->mail_template_id = $templateId;
-        $mailTemplateContentDTO->locale_code = $locale;
+        $mailTemplateContentDTO->locale = $locale;
 
         $this->mailTemplateService->createMailTemplateContent($mailTemplateContentDTO);
 

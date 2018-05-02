@@ -1,10 +1,18 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: levaral
+ * Date: 02/05/18
+ * Time: 7:22 PM
+ */
+
 namespace Levaral\Core\Action\MailTemplate;
 
 use App\Domain\MailTemplate\MailTemplate;
 use App\Http\Actions\GetAction;
+use Illuminate\Support\Facades\Mail;
 
-class GetPreview extends GetAction
+class GetSend extends GetAction
 {
     public function __construct()
     {
@@ -25,20 +33,13 @@ class GetPreview extends GetAction
     {
         $mailTemplate = MailTemplate::query()->find($templateId);
         $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
+
         $notification = $notificationClass::preview();
         $message = $notification->toMail($this->user());
         $templateContent = $message->viewData;
         $templateContent = $templateContent['templateContent'];
-        return view('vendor.notifications.email', compact('templateContent'));
-    }
-
-    public function getTemplate($mailTemplate, $notification)
-    {
-        $mailContent = $mailTemplate->content->where('locale', 'en')->first();
-        $mailTemplateVariable = $notification->getTemplateVariables($notification);
-        $output = str_replace(array_keys($mailTemplateVariable), array_values($mailTemplateVariable), $mailContent->content);
-        $output = str_replace(['[', ']'], ' ' , $output);
-        $mailTemplate->content->content = $mailContent->content = $output;
-        return $mailTemplate;
+        $messageContent = view('vendor.notifications.email', compact('templateContent'));
+        Mail::to($this->user())->send($messageContent);
+//        return view('vendor.notifications.email', compact('templateContent'));
     }
 }
