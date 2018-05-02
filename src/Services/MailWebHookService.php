@@ -22,6 +22,15 @@ class MailWebHookService
     CONST BOUNC = 'bounc';
     CONST STORED = 'stored';
 
+    CONST MAIL_SENT = [self::DELIVERED, self::PROCESSED];
+    CONST MAIL_OPEND = [self::OPENED, self::OPEN];
+    CONST MAIL_CLICKED = [self::CLICKED, self::CLICK];
+    CONST MAIL_UNSUBSCRIBED = [self::UNSUBSCRIBED, self::UNSUBSCRIBE];
+    CONST MAIL_COMPLAINED = [self::COMPLAINED];
+    CONST MAIL_STORED = [self::STORED];
+    CONST MAIL_FAIL = [self::DROPPED,  self::BOUNCED, self::BOUNC, self::FAILED];
+
+
     public function create(MailLogDTO $mailLogDTO)
     {
         $mailLogs = MailLog::find($mailLogDTO->model_id);
@@ -34,22 +43,19 @@ class MailWebHookService
 
         $now = \Carbon\Carbon::now();
 
-        if ($mailLogDTO->event == self::DELIVERED || $mailLogDTO->event == self::PROCESSED) {
+        if (in_array($mailLogDTO->event, self::MAIL_SENT)) {
             $mailLogs->mail_sent_at = $now;
-        } elseif ($mailLogDTO->event == self::OPENED || $mailLogDTO->event == self::OPEN) {
+        } elseif (in_array($mailLogDTO->event, self::MAIL_OPEND)) {
             $mailLogs->mail_opened_at = $now;
-        } elseif ($mailLogDTO->event == self::CLICKED || $mailLogDTO->event == self::CLICK) {
+        } elseif (in_array($mailLogDTO->event, self::MAIL_CLICKED)) {
             $mailLogs->mail_clicked_at = $now;
-        } elseif ($mailLogDTO->event == self::UNSUBSCRIBED || $mailLogDTO->event == self::UNSUBSCRIBE) {
+        } elseif (in_array($mailLogDTO->event, self::MAIL_UNSUBSCRIBED)) {
             $mailLogs->mail_unsubscribed_at = $now;
-        } elseif ($mailLogDTO->event == self::COMPLAINED) {
+        } elseif (in_array($mailLogDTO->event, self::MAIL_COMPLAINED)) {
             $mailLogs->mail_complained_at = $now;
-        } elseif ($mailLogDTO->event == self::STORED) {
+        } elseif (in_array($mailLogDTO->event, self::MAIL_STORED)) {
             $mailLogs->mail_stored_at = $now;
-        } elseif ($mailLogDTO->event == self::DROPPED
-            || $mailLogDTO->event == self::BOUNCED
-            || $mailLogDTO->event == self::BOUNC
-            || $mailLogDTO->event == self::FAILED) {
+        } elseif (in_array($mailLogDTO->event, self::MAIL_FAIL)) {
             $mailLogs->error_reason = $reason;
             $mailLogs->mail_fail_at = $now;
         }
