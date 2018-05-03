@@ -8,9 +8,11 @@
 
 namespace Levaral\Core\Action\MailTemplate;
 
+use App\Domain\User\User;
 use App\Domain\MailTemplate\MailTemplate;
 use App\Http\Actions\GetAction;
 use Illuminate\Support\Facades\Mail;
+use Levaral\Core\Util;
 
 class GetSend extends GetAction
 {
@@ -34,12 +36,8 @@ class GetSend extends GetAction
         $mailTemplate = MailTemplate::query()->find($templateId);
         $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
 
-        $notification = $notificationClass::preview();
-        $message = $notification->toMail($this->user());
-        $templateContent = $message->viewData;
-        $templateContent = $templateContent['templateContent'];
-        $messageContent = view('vendor.notifications.email', compact('templateContent'));
-        Mail::to($this->user())->send($messageContent);
-//        return view('vendor.notifications.email', compact('templateContent'));
+        $notification = new $notificationClass();
+        $user = User::query()->find(5);
+        Util::notify($user, $notification);
     }
 }

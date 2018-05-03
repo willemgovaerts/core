@@ -31,14 +31,4 @@ class GetPreview extends GetAction
         $templateContent = $templateContent['templateContent'];
         return view('vendor.notifications.email', compact('templateContent'));
     }
-
-    public function getTemplate($mailTemplate, $notification)
-    {
-        $mailContent = $mailTemplate->content->where('locale', 'en')->first();
-        $mailTemplateVariable = $notification->getTemplateVariables($notification);
-        $output = str_replace(array_keys($mailTemplateVariable), array_values($mailTemplateVariable), $mailContent->content);
-        $output = str_replace(['[', ']'], ' ' , $output);
-        $mailTemplate->content->content = $mailContent->content = $output;
-        return $mailTemplate;
-    }
 }

@@ -42,7 +42,7 @@
                 <tr>
                     <td class="body" width="100%" cellpadding="0" cellspacing="0"
                         style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; background-color: #FFFFFF; border-bottom: 1px solid #EDEFF2; border-top: 1px solid #EDEFF2; margin: 0; padding: 0; width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%;">
-                        {!! $output !!}
+                        {!! $templateContent !!}
                     </td>
                 </tr>
                 <tr>
