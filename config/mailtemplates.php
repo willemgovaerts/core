@@ -1,8 +1,11 @@
 <?php
 return [
-    'globalvariables' => [
-        'fromUser',
-        'contactUs',
-        'companyName'
+    'global_variables' => [
+        'siteLink',
+        'loginLink',
+        'registerLink',
+        'username',
+        'name',
+        'email'
     ]
 ];

@@ -23,9 +23,14 @@ class GetEdit extends GetAction
         return [];
     }
 
-    public function execute($templateId, $localeCode='en')
+    public function execute($templateId, $locale = 'en')
     {
-        $mailTemplate = MailTemplate::query()->find($templateId);
+        $mailTemplate = MailTemplate::query()->with(['content'])->find($templateId);
+
+        $templateContent = MailTemplateContent::query()
+                            ->where('mail_template_id', $templateId)
+                            ->where('locale', $locale)->first();
+
         $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
 
         // Check for the notification class file, if doesn't exists then redirect to list page.
@@ -38,12 +43,20 @@ class GetEdit extends GetAction
 
         $notification = new $notificationClass();
 
-        $templateVariables = isset($notification->templateVariables) ? array_keys($notification->templateVariables) : [];
+        $templateVariables = (isset($notification->templateVariables)) ? array_keys($notification->templateVariables) : [];
 
-        $mailTemplateGlobalVariables = config('mailtemplates.globalvariables');
+        $templateVariables = array_merge($templateVariables, config('mailtemplates.global_variables'));
 
-        $templateVariables = array_merge($templateVariables, $mailTemplateGlobalVariables);
-
-        return view('vendor.core.MailTemplate.form', compact('mailTemplate', 'templateVariables', 'locales', 'templateId', 'localeCode'));
+        return view(
+            'vendor.core.MailTemplate.form',
+            compact(
+                'mailTemplate',
+                'templateVariables',
+                'locales',
+                'templateId',
+                'locale',
+                'templateContent'
+            )
+        );
     }
 }

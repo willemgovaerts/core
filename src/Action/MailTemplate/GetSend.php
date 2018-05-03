@@ -37,6 +37,7 @@ class GetSend extends GetAction
         $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
 
         $notification = new $notificationClass();
+
         $user = User::query()->find(5);
         Util::notify($user, $notification);
     }

@@ -24,7 +24,7 @@ class Util
         $notifiable->notify($notification);
     }
 
-    public static function getTemplate($notification, $notifiable)
+    public static function getTemplate($notification, $notifiable, $locale = 'en')
     {
         // Get notification class name from the object.
         $notificationPath = get_class($notification);
@@ -33,9 +33,17 @@ class Util
 
         $mailTemplate = MailTemplate::query()->with(['content'])->where('type', $notificationType)->first();
 
-        $mailContent = $mailTemplate->content->where('locale', 'en')->first();
+        $mailContent = $mailTemplate->content->where('locale', $locale)->first();
 
         $mailTemplateVariables = $notification->getTemplateVariables($notifiable);
+
+        // Global variables assignment
+        $mailTemplateVariables['siteLink'] = env('APP_URL');
+        $mailTemplateVariables['loinLink'] = '#';
+        $mailTemplateVariables['registerLink'] = '#';
+        $mailTemplateVariables['username'] = '';
+        $mailTemplateVariables['name'] = '';
+        $mailTemplateVariables['email'] = '';
 
         $templateContent = $mailContent->content;
 
@@ -44,6 +52,8 @@ class Util
         }
 
         //return $templateContent;
-        return (new MailMessage)->view('vendor.notifications.email', compact('templateContent'));
+        return (new MailMessage)
+            ->subject($mailContent->subject)
+            ->view('vendor.notifications.email', compact('templateContent'));
     }
 }

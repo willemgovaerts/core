@@ -16,7 +16,6 @@
             <td>
                 <a href="{{ route('MailTemplate.GetEdit', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-default">Edit</a>
                 <a href="{{ route('MailTemplate.GetPreview', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-default">Preview</a>
-                <a href="{{ route('MailTemplate.GetSend', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-default">Send</a>
             </td>
         </tr>
     @endforeach

@@ -25,10 +25,15 @@ class GetPreview extends GetAction
     {
         $mailTemplate = MailTemplate::query()->find($templateId);
         $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
+
         $notification = $notificationClass::preview();
+
+        // TODO: do we really need to call this?
         $message = $notification->toMail($this->user());
+
         $templateContent = $message->viewData;
-        $templateContent = $templateContent['templateContent'];
+        $templateContent = (isset($templateContent['templateContent'])) ? $templateContent['templateContent'] : '';
+
         return view('vendor.notifications.email', compact('templateContent'));
     }
 }

@@ -15,7 +15,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostSave', ['id'=>$templateId, 'locale'=>$localeCode]) }}">
+                            <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostSave', ['id'=>$templateId, 'locale'=>$locale]) }}">
                                 <input type="hidden" name="locale" value="{{ $localeCode }}" />
                                 {{ csrf_field() }}
                                 @foreach($errors as $error)
@@ -31,7 +31,7 @@
                                 <div class="row form-group">
                                     <label class="control-label col-md-3">Content</label>
                                     <div class="col-md-9">
-                                        <textarea rows="4" col="80" id="content" name="content" class="form-control"></textarea>
+                                        <textarea rows="4" col="80" id="content" name="content" class="form-control">{{ $templateContent }}</textarea>
                                         {{ $errors->first('content') }}
                                     </div>
                                 </div>
@@ -40,7 +40,7 @@
                                     <div class="col-md-9">
                                         <ul class="list-inline">
                                         @foreach($templateVariables as $templateVariable)
-                                            <li class="btn btn-primary tags" data-tag="[{{ $templateVariable }}]">{{ $templateVariable }}</li>
+                                            <li class="tags" data-tag="[{{ $templateVariable }}]">{{ $templateVariable }}</li>
                                         @endforeach
                                         </ul>
                                     </div>
@@ -49,6 +49,8 @@
                                     <div class="col-md-12 text-center">
                                         <input type="submit" value="save" class="btn btn-success" />
                                         <a href="{{ route('MailTemplate.GetList') }}" class="btn btn-default">Cancel</a>
+                                        <a href="{{ route('MailTemplate.GetPreview', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-default">Preview</a>
+                                        <a href="{{ route('MailTemplate.GetSend', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-default">Send</a>
                                     </div>
                                 </div>
                             </form>

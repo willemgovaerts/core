@@ -62,9 +62,11 @@ class MailTemplateService
 
     public function createMailTemplateContent(MailTemplateContentDTO $mailTemplateContentDTO)
     {
-        $mailTemplateContent = MailTemplateContent::query()->where('mail_template_id', $mailTemplateContentDTO->mail_template_id)
-                                                            ->where('locale', $mailTemplateContentDTO->locale)
-                                                            ->first();
+        $mailTemplateContent = MailTemplateContent::query()
+            ->where('mail_template_id', $mailTemplateContentDTO->mail_template_id)
+            ->where('locale', $mailTemplateContentDTO->locale)
+            ->first();
+
         if (!$mailTemplateContent) {
             $mailTemplateContent = new MailTemplateContent();
         }
