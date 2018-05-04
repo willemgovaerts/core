@@ -40,7 +40,8 @@ class CreateMailTemplateTables extends Command
      */
     public function handle()
     {
-//        $this->createLocalesTable();
+        Artisan::call('make:model', ['name' => 'App\Domain\MailTemplate\MailTemplateContent']);
+
         $this->createMailTemplatesTable();
         $this->createMailTemplateContentsTable();
 
@@ -51,16 +52,6 @@ class CreateMailTemplateTables extends Command
         $this->info('Table generated successfully.');
     }
 
-    protected function createLocalesTable()
-    {
-        Schema::create('locales', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('language_code')->nullable();
-            $table->string('name')->nullable();
-            $table->softDeletes();
-            $table->timestamps();
-        });
-    }
 
     protected function createMailTemplatesTable()
     {
@@ -83,6 +74,7 @@ class CreateMailTemplateTables extends Command
             $table->text('content')->nullable();
             $table->softDeletes();
             $table->timestamps();
+            $table->foreign('mail_template_id')->references('id')->on('mail_templates')->onDelete('cascade');
         });
     }
 }

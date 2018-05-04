@@ -10,12 +10,4 @@ class MailTemplate extends BaseMailTemplate
     protected $fillable = [
         'type'
     ];
-
-    /**
-    * @return \Illuminate\Database\Eloquent\Relations\HasMany
-    */
-    public function content()
-    {
-        return $this->hasMany('App\Domain\MailTemplate\MailTemplateContent');
-    }
 }

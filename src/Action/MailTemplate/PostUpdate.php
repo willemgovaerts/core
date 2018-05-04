@@ -14,7 +14,7 @@ use App\Domain\MailTemplate\MailTemplateContent;
 use Levaral\Core\DTO\MailTemplateContentDTO;
 use Levaral\Core\Services\MailTemplateService;
 
-class PostSave extends PostAction
+class PostUpdate extends PostAction
 {
     protected $mailTemplateService;
 

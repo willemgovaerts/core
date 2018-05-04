@@ -4,6 +4,7 @@ namespace Levaral\Core;
 
 
 use App\Domain\MailTemplate\MailTemplate;
+use App\Domain\MailTemplate\MailTemplateContent;
 use Illuminate\Notifications\Notification;
 use App\Domain\MailLog\MailLog;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -37,10 +38,12 @@ class Util
         $notificationPathArray = explode("\\", $notificationPath);
         $notificationType = end($notificationPathArray);
 
-        $mailTemplate = MailTemplate::query()->with(['content'])->where('type', $notificationType)->first();
+        $mailTemplate = MailTemplate::query()->where('type', $notificationType)->first();
 
-        $mailContent = $mailTemplate->content->where('locale', $locale)->first();
-
+        $mailContent = MailTemplateContent::query()
+            ->where('mail_template_id', '=', $mailTemplate->id)
+            ->where('locale', $locale)->first();
+        
         $mailTemplateVariables = $notification->getTemplateVariables($notifiable);
 
         // Global variables assignment
@@ -53,7 +56,7 @@ class Util
 
         $templateContent = $mailContent->content;
 
-        foreach ($mailTemplateVariables as $mailTemplateVariable=>$val) {
+        foreach ($mailTemplateVariables as $mailTemplateVariable => $val) {
             $templateContent = str_replace('[' . $mailTemplateVariable . ']', $val, $templateContent);
         }
 

@@ -15,7 +15,7 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostSave', ['id'=>$templateId, 'locale'=>$locale]) }}">
+                            <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostUpdate', ['id'=>$templateId, 'locale'=>$locale]) }}">
                                 <input type="hidden" name="locale" value="{{ $locale }}" />
                                 {{ csrf_field() }}
                                 @foreach($errors as $error)
@@ -50,7 +50,6 @@
                                         <input type="submit" value="save" class="btn btn-success" />
                                         <a href="{{ route('MailTemplate.GetList') }}" class="btn btn-default">Cancel</a>
                                         <a href="{{ route('MailTemplate.GetPreview', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-default">Preview</a>
-                                        <a href="{{ route('MailTemplate.GetSend', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-default">Send</a>
                                     </div>
                                 </div>
                             </form>

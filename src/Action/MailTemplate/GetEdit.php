@@ -25,7 +25,7 @@ class GetEdit extends GetAction
 
     public function execute($templateId, $locale = 'en')
     {
-        $mailTemplate = MailTemplate::query()->with(['content'])->find($templateId);
+        $mailTemplate = MailTemplate::query()->find($templateId);
 
         $templateContent = MailTemplateContent::query()
                             ->where('mail_template_id', $templateId)
@@ -45,10 +45,10 @@ class GetEdit extends GetAction
 
         $templateVariables = (isset($notification->templateVariables)) ? array_keys($notification->templateVariables) : [];
 
-        $templateVariables = array_merge($templateVariables, config('mailtemplates.global_variables', []));
+        $templateVariables = array_merge($templateVariables, config('mail-templates.global_variables', []));
 
         return view(
-            'vendor.core.MailTemplate.form',
+            'vendor.core.mail-template.form',
             compact(
                 'mailTemplate',
                 'templateVariables',
