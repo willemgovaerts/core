@@ -31,6 +31,8 @@ class CoreServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/core'),
             __DIR__ . '/../resources/views/notifications' => resource_path('views/vendor/notifications'),
+            __DIR__.'/../config/frontlanguages.php' => config_path('frontlanguages.php'),
+            __DIR__.'/../config/mail-templates.php' => config_path('mail-templates.php'),
         ]);
     }
 

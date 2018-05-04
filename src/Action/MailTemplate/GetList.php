@@ -28,7 +28,6 @@ class GetList extends GetAction
 
     public function execute()
     {
-        //TODO: Use Pagination
         $mailTemplates = MailTemplate::query()->get();
 
         return view('vendor.core.mail-template.list', compact('mailTemplates'));

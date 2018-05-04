@@ -5,17 +5,17 @@
             <div class="card">
                 <div class="card-header">{{ __('app.register.title') }}</div>
 
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            @foreach($locales as $locale)
-                                <a href="{{ route('MailTemplate.GetEdit', ['id'=>$templateId, 'locale'=>$locale]) }}" class="btn btn-primary">{{ $locale }}</a>
-                            @endforeach
+                <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostUpdate', ['id'=>$templateId, 'locale'=>$locale]) }}">
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 text-right mb-2">
+                                @foreach($locales as $locale)
+                                    <a href="{{ route('MailTemplate.GetEdit', ['id'=>$templateId, 'locale'=>$locale]) }}" class="badge badge-primary p-2">{{ $locale }}</a>
+                                @endforeach
+                            </div>
                         </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostUpdate', ['id'=>$templateId, 'locale'=>$locale]) }}">
+                        <div class="row">
+                            <div class="col-md-12">
                                 <input type="hidden" name="locale" value="{{ $locale }}" />
                                 {{ csrf_field() }}
                                 @foreach($errors as $error)
@@ -38,33 +38,31 @@
                                 <div class="row form-group">
                                     <label class="control-label col-md-3">Variables</label>
                                     <div class="col-md-9">
-                                        <ul class="list-inline">
                                         @foreach($templateVariables as $templateVariable)
-                                            <li class="tags" data-tag="[{{ $templateVariable }}]">{{ $templateVariable }}</li>
+                                            <label class="p-2 tags badge badge-primary" data-tag="[{{ $templateVariable }}]">{{ $templateVariable }}</label>
                                         @endforeach
-                                        </ul>
                                     </div>
                                 </div>
-                                <div class="row form-group">
-                                    <div class="col-md-12 text-center">
-                                        <input type="submit" value="save" class="btn btn-success" />
-                                        <a href="{{ route('MailTemplate.GetList') }}" class="btn btn-default">Cancel</a>
-                                        <a href="{{ route('MailTemplate.GetPreview', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-default">Preview</a>
-                                    </div>
-                                </div>
-                            </form>
+                            </div>
                         </div>
                     </div>
-                </div>
+                    <div class="card-footer">
+                        <div class="col-md-12 text-right p-0">
+                            <input type="submit" value="save" class="btn btn-success" />
+                            <a href="{{ route('MailTemplate.GetList') }}" class="btn btn-info">Cancel</a>
+                            <a href="{{ route('MailTemplate.GetPreview', ['id'=>$mailTemplate->getId()]) }}" class="btn btn-info">Preview</a>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 @endsection
-@push('body-js')
-    <script>
-        $('.tags').on('click', function() {
-            var val = $('#content').val();
-            $('#content').val( val + ' ' + $(this).data('tag'));
-        });
-    </script>
-@endpush
+{{--@push('body-js')--}}
+    {{--<script>--}}
+        {{--$('.tags').on('click', function() {--}}
+            {{--var val = $('#content').val();--}}
+            {{--$('#content').val( val + ' ' + $(this).data('tag'));--}}
+        {{--});--}}
+    {{--</script>--}}
+{{--@endpush--}}
