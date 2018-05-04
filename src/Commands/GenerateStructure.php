@@ -64,6 +64,15 @@ class GenerateStructure extends Command
             File::put(app_path('Domain/MailLog/MailLogQuery.php'), view('core::MailLogQuery', compact('phpTag'))->render());
         }
 
+        //Generate MailTemplate Domain
+        if (!file_exists(app_path('Domain/MailTemplate'))) {
+            File::makeDirectory(app_path('Domain/MailTemplate'), null, true);
+            File::put(app_path('Domain/MailTemplate/MailTemplate.php'), view('core::MailTemplate', compact('phpTag'))->render());
+            File::put(app_path('Domain/MailTemplate/MailTemplateContent.php'), view('core::MailTemplateContent', compact('phpTag'))->render());
+            File::put(app_path('Domain/MailTemplate/MailTemplateQuery.php'), view('core::MailTemplateQuery', compact('phpTag'))->render());
+            File::put(app_path('Domain/MailTemplate/MailTemplateContentQuery.php'), view('core::MailTemplateContentQuery', compact('phpTag'))->render());
+        }
+
         if (!file_exists(app_path('Http/Actions/GetAction.php'))) {
             File::put(app_path('Http/Actions/GetAction.php'), view('core::GetAction', compact('phpTag'))->render());
         }

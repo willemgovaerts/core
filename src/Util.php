@@ -24,6 +24,12 @@ class Util
         $notifiable->notify($notification);
     }
 
+    /**
+     * @param $notification
+     * @param $notifiable
+     * @param string $locale
+     * @return mixed
+     */
     public static function getTemplate($notification, $notifiable, $locale = 'en')
     {
         // Get notification class name from the object.
@@ -39,11 +45,11 @@ class Util
 
         // Global variables assignment
         $mailTemplateVariables['siteLink'] = env('APP_URL');
-        $mailTemplateVariables['loinLink'] = '#';
+        $mailTemplateVariables['loginLink'] = '#';
         $mailTemplateVariables['registerLink'] = '#';
-        $mailTemplateVariables['username'] = '';
-        $mailTemplateVariables['name'] = '';
-        $mailTemplateVariables['email'] = '';
+        $mailTemplateVariables['username'] = isset($notifiable->username) ? $notifiable->username : '';
+        $mailTemplateVariables['name'] = isset($notifiable->name) ? $notifiable->name : '';
+        $mailTemplateVariables['email'] = isset($notifiable->email) ? $notifiable->email : '';
 
         $templateContent = $mailContent->content;
 

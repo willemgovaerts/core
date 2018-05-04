@@ -45,7 +45,7 @@ class GetEdit extends GetAction
 
         $templateVariables = (isset($notification->templateVariables)) ? array_keys($notification->templateVariables) : [];
 
-        $templateVariables = array_merge($templateVariables, config('mailtemplates.global_variables'));
+        $templateVariables = array_merge($templateVariables, config('mailtemplates.global_variables', []));
 
         return view(
             'vendor.core.MailTemplate.form',

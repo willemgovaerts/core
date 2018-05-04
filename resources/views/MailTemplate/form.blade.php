@@ -16,7 +16,7 @@
                     <div class="row">
                         <div class="col-md-12">
                             <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostSave', ['id'=>$templateId, 'locale'=>$locale]) }}">
-                                <input type="hidden" name="locale" value="{{ $localeCode }}" />
+                                <input type="hidden" name="locale" value="{{ $locale }}" />
                                 {{ csrf_field() }}
                                 @foreach($errors as $error)
                                     <p>{{ $error }}</p>
@@ -24,14 +24,14 @@
                                 <div class="row form-group">
                                     <label class="control-label col-md-3">Subject</label>
                                     <div class="col-md-9">
-                                        <input type="text" class="form-control" name="subject" value="" />
+                                        <input type="text" class="form-control" name="subject" value="{{ $templateContent->subject }}" />
                                         {{ $errors->first('subject') }}
                                     </div>
                                 </div>
                                 <div class="row form-group">
                                     <label class="control-label col-md-3">Content</label>
                                     <div class="col-md-9">
-                                        <textarea rows="4" col="80" id="content" name="content" class="form-control">{{ $templateContent }}</textarea>
+                                        <textarea rows="4" col="80" id="content" name="content" class="form-control">{{ $templateContent->content }}</textarea>
                                         {{ $errors->first('content') }}
                                     </div>
                                 </div>

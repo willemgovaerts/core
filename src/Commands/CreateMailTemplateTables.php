@@ -44,9 +44,6 @@ class CreateMailTemplateTables extends Command
         $this->createMailTemplatesTable();
         $this->createMailTemplateContentsTable();
 
-        Artisan::call('make:model', ['name' => 'App\Domain\MailTemplate\MailTemplate']);
-        Artisan::call('make:model', ['name' => 'App\Domain\MailTemplate\MailTemplateContent']);
-
         //Creates models
         Artisan::call('levaral:models', ['model' => 'App\Domain\MailTemplate\MailTemplate']);
         Artisan::call('levaral:models', ['model' => 'App\Domain\MailTemplate\MailTemplateContent']);
