@@ -1,14 +1,19 @@
 <?php
 namespace Levaral\Core\Action\MailTemplate;
 
-use App\Domain\MailTemplate\MailTemplate;
 use App\Http\Actions\GetAction;
+use Levaral\Core\Services\MailTemplateService;
 
 class GetPreview extends GetAction
 {
-    public function __construct()
+    /**
+     * @var MailTemplateService
+     */
+    private $mailTemplateService;
+
+    public function __construct(MailTemplateService $mailTemplateService)
     {
-        //
+        $this->mailTemplateService = $mailTemplateService;
     }
 
     public function authorize()
@@ -23,17 +28,7 @@ class GetPreview extends GetAction
 
     public function execute($templateId)
     {
-        $mailTemplate = MailTemplate::query()->find($templateId);
-        $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
-
-        $notification = $notificationClass::preview();
-
-        // TODO: do we really need to call this?
-        $message = $notification->toMail($this->user());
-
-        $templateContent = $message->viewData;
-        $templateContent = (isset($templateContent['templateContent'])) ? $templateContent['templateContent'] : '';
-
+        $templateContent = $this->mailTemplateService->getTemplateContent($templateId, $this->user());
         return view('vendor.notifications.email', compact('templateContent'));
     }
 }

@@ -115,4 +115,52 @@ class MailTemplateService
 
         return $notificationFiles;
     }
+
+    public function getTemplateContent(int $templateId, $user)
+    {
+        $mailTemplate = MailTemplate::query()->find($templateId);
+        $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
+
+        $notification = $notificationClass::preview();
+
+        // TODO: do we really need to call this?
+        $message = $notification->toMail($user);
+
+        $templateContent = $message->viewData;
+        return (isset($templateContent['templateContent'])) ? $templateContent['templateContent'] : '';
+    }
+
+    public function getTemplateEdit(int $templateId, string $locale)
+    {
+        $mailTemplate = MailTemplate::query()->find($templateId);
+
+        $templateContent = MailTemplateContent::query()
+            ->where('mail_template_id', $templateId)
+            ->where('locale', $locale)->first();
+
+        $notificationClass = 'App\\Notifications\\' . $mailTemplate->getType();
+
+        // Check for the notification class file, if doesn't exists then redirect to list page.
+        if (!class_exists($notificationClass)) {
+            return redirect()->route('MailTemplate.GetList');
+        }
+
+        // Get the locale directories
+        $locales = array_diff(scandir(resource_path('lang')), array('..', '.'));
+
+        $notification = new $notificationClass();
+
+        $templateVariables = (isset($notification->templateVariables)) ? array_keys($notification->templateVariables) : [];
+
+        $templateVariables = array_merge($templateVariables, config('mail-templates.global_variables', []));
+
+        return compact(
+            'mailTemplate',
+            'templateVariables',
+            'locales',
+            'templateId',
+            'locale',
+            'templateContent'
+        );
+    }
 }
