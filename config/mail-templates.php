@@ -1,11 +1,11 @@
 <?php
 return [
     'global_variables' => [
-        'siteLink',
-        'loginLink',
-        'registerLink',
-        'username',
-        'name',
-        'email'
-    ]
+        'siteLink' => config('app.url'),
+        'loginLink' => url('login'),
+        'registerLink' =>  url('register/user'),
+        'username' => '',
+        'name' => '',
+        'email' => ''
+    ],
 ];

@@ -40,40 +40,36 @@ class CreateMailTemplateTables extends Command
      */
     public function handle()
     {
+        $this->createMailTemplatesTables();
+
+        Artisan::call('make:model', ['name' => 'App\Domain\MailTemplate\MailTemplate']);
         Artisan::call('make:model', ['name' => 'App\Domain\MailTemplate\MailTemplateContent']);
 
-        $this->createMailTemplatesTable();
-        $this->createMailTemplateContentsTable();
-
         //Creates models
-        Artisan::call('levaral:models', ['model' => 'App\Domain\MailTemplate\MailTemplate']);
-        Artisan::call('levaral:models', ['model' => 'App\Domain\MailTemplate\MailTemplateContent']);
+        //Artisan::call('levaral:models', ['model' => 'App\Domain\MailTemplate\MailTemplate']);
+        //Artisan::call('levaral:models', ['model' => 'App\Domain\MailTemplate\MailTemplateContent']);
 
         $this->info('Table generated successfully.');
     }
 
 
-    protected function createMailTemplatesTable()
+    protected function createMailTemplatesTables()
     {
         Schema::create('mail_templates', function (Blueprint $table) {
             $table->increments('id');
             $table->string('type')->nullable();
-            $table->text('variables')->nullable();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
         });
-    }
 
-    protected function createMailTemplateContentsTable()
-    {
         Schema::create('mail_template_contents', function (Blueprint $table) {
             $table->increments('id');
             $table->string('locale')->nullable();
             $table->unsignedInteger('mail_template_id');
             $table->text('subject')->nullable();
             $table->text('content')->nullable();
-            $table->softDeletes();
             $table->timestamps();
+            $table->softDeletes();
             $table->foreign('mail_template_id')->references('id')->on('mail_templates')->onDelete('cascade');
         });
     }

@@ -13,10 +13,8 @@ class MailTemplateService
     {
         $notificationFiles = $this->getNotificationFiles();
 
-        // TODO remove template content before deleting mail templates.
-
         // Remove all the template entries which are not in the notification files list
-        MailTemplate::query()->whereNotIn('type', $notificationFiles)->delete();
+        MailTemplate::query()->whereNotIn('type', $notificationFiles)->forceDelete();
 
         foreach ($notificationFiles as $notificationFile) {
             $this->createMailTemplates($notificationFile);
@@ -27,31 +25,39 @@ class MailTemplateService
     {
         // TODO: what to do with template content if template is created new by deleting and existing one?
         $notificationClass = 'App\\Notifications\\' . $notificationFile;
+        // Get the locale directories
+        $locales = $this->getLocaleDirectories();
 
         if (!class_exists($notificationClass)) {
             return false;
         }
 
         $notification = new $notificationClass();
-        if (!empty($notification->templateVariables)) {
-            $templateVariables = $notification->templateVariables;
 
-            $mailTemplate = MailTemplate::query()->firstOrNew(['type' => $notificationFile]);
-            $mailTemplate->variables = json_encode($templateVariables);
-            $mailTemplate->save();
+        //check if getTemplateVariables method
+        if (!method_exists($notification, 'getTemplateVariables')) {
+            return false;
+        }
 
-            // remove existing template content before creating new.
-            $this->removeMailTemplateContent($mailTemplate->getId());
+        //if template already exist then update
+        $mailTemplate = MailTemplate::query()->firstOrNew(['type' => $notificationFile]);
+        $mailTemplate->save();
 
-            // Get the locale directories
-            $locales = $this->getLocaleDirectories();
+        foreach ($locales as $locale) {
+            //if template already exist then don't do anything
+            $mailTemplateContent = MailTemplateContent::query()
+                ->where('locale', $locale)
+                ->where('mail_template_id', $mailTemplate->getId())
+                ->first();
 
-            foreach ($locales as $locale) {
-                $mailTemplateContentDTO = new MailTemplateContentDTO([]);
-                $mailTemplateContentDTO->locale = $locale;
-                $mailTemplateContentDTO->mail_template_id = $mailTemplate->getId();
-                $this->createMailTemplateContent($mailTemplateContentDTO);
+            if ($mailTemplateContent) {
+                continue;
             }
+
+            $mailTemplateContent = new MailTemplateContent();
+            $mailTemplateContent->setLocale($locale);
+            $mailTemplateContent->setMailTemplateId($mailTemplate->getId());
+            $mailTemplateContent->save();
         }
     }
 
@@ -106,11 +112,7 @@ class MailTemplateService
         $files = File::allFiles($notificationDirectory);
 
         foreach ($files as $file) {
-            $notificationFiles[] = str_replace(
-                "." . pathinfo($file->getFileName(), PATHINFO_EXTENSION),
-                '',
-                $file->getFileName()
-            );
+            $notificationFiles[] = rtrim($file->getFileName(), '.'. $file->getExtension());
         }
 
         return $notificationFiles;
@@ -148,17 +150,14 @@ class MailTemplateService
         // Get the locale directories
         $locales = array_diff(scandir(resource_path('lang')), array('..', '.'));
 
-        $notification = new $notificationClass();
+        $templateVariables = (isset($notificationClass::$templateVariables)) ? array_keys($notificationClass::$templateVariables) : [];
 
-        $templateVariables = (isset($notification->templateVariables)) ? array_keys($notification->templateVariables) : [];
-
-        $templateVariables = array_merge($templateVariables, config('mail-templates.global_variables', []));
+        $templateVariables = array_merge($templateVariables, array_keys(config('mail-templates.global_variables', [])));
 
         return compact(
             'mailTemplate',
             'templateVariables',
             'locales',
-            'templateId',
             'locale',
             'templateContent'
         );

@@ -3,14 +3,14 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="card">
-                <div class="card-header">{{ __('app.register.title') }}</div>
+                <div class="card-header">{{ __('app.email_template.title') }} : {{ $mailTemplate->type }}</div>
 
-                <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostUpdate', ['id'=>$templateId, 'locale'=>$locale]) }}">
+                <form method="post" class="horizontal-form" action="{{ route('MailTemplate.PostUpdate', ['id'=>$mailTemplate->id, 'locale'=>$locale]) }}">
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 text-right mb-2">
                                 @foreach($locales as $locale)
-                                    <a href="{{ route('MailTemplate.GetEdit', ['id'=>$templateId, 'locale'=>$locale]) }}" class="badge badge-primary p-2">{{ $locale }}</a>
+                                    <a href="{{ route('MailTemplate.GetEdit', ['id'=>$mailTemplate->id, 'locale'=>$locale]) }}" class="badge badge-primary p-2">{{ $locale }}</a>
                                 @endforeach
                             </div>
                         </div>
@@ -80,3 +80,11 @@
         });
     </script>
 @endpush
+{{--@push('body-js')--}}
+{{--<script>--}}
+{{--$('.tags').on('click', function() {--}}
+{{--var val = $('#content').val();--}}
+{{--$('#content').val( val + ' ' + $(this).data('tag'));--}}
+{{--});--}}
+{{--</script>--}}
+{{--@endpush--}}

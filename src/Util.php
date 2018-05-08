@@ -31,30 +31,28 @@ class Util
      * @param string $locale
      * @return mixed
      */
-    public static function getTemplate($notification, $notifiable, $locale = 'en')
+    public static function getMailTemplate($notification, $notifiable, $locale = 'en')
     {
         // Get notification class name from the object.
         $notificationPath = get_class($notification);
-        $notificationPathArray = explode("\\", $notificationPath);
-        $notificationType = end($notificationPathArray);
+        $notificationClassName = class_basename($notificationPath);
 
-        $mailTemplate = MailTemplate::query()->where('type', $notificationType)->first();
+        $mailTemplate = MailTemplate::query()->where('type', $notificationClassName)->first();
 
-        $mailContent = MailTemplateContent::query()
+        $mailTemplateContent = MailTemplateContent::query()
             ->where('mail_template_id', '=', $mailTemplate->id)
             ->where('locale', $locale)->first();
+
+        $templateContent = $mailTemplateContent->content;
+
+        $mailTemplateVariables = config('mail-templates.global_variables');
         
-        $mailTemplateVariables = $notification->getTemplateVariables($notifiable);
+        $mailTemplateVariables += $notification->getTemplateVariables($notifiable);
 
         // Global variables assignment
-        $mailTemplateVariables['siteLink'] = env('APP_URL');
-        $mailTemplateVariables['loginLink'] = '#';
-        $mailTemplateVariables['registerLink'] = '#';
         $mailTemplateVariables['username'] = isset($notifiable->username) ? $notifiable->username : '';
         $mailTemplateVariables['name'] = isset($notifiable->name) ? $notifiable->name : '';
         $mailTemplateVariables['email'] = isset($notifiable->email) ? $notifiable->email : '';
-
-        $templateContent = $mailContent->content;
 
         foreach ($mailTemplateVariables as $mailTemplateVariable => $val) {
             $templateContent = str_replace('[' . $mailTemplateVariable . ']', $val, $templateContent);
@@ -62,7 +60,7 @@ class Util
 
         //return $templateContent;
         return (new MailMessage)
-            ->subject($mailContent->subject)
+            ->subject($mailTemplateContent->subject)
             ->view('vendor.notifications.email', compact('templateContent'));
     }
 }
