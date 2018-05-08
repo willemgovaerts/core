@@ -154,6 +154,15 @@ class MailTemplateService
 
         $templateVariables = array_merge($templateVariables, array_keys(config('mail-templates.global_variables', [])));
 
+        foreach (config('mail-templates.button_style') as $type => $style) {
+            $templateVariables[] = $type.'Button'.':'.'any link tag'.':'.'Button Text';
+        }
+
+        //wrap all tags with square bracate
+        $templateVariables = array_map(function($variable){
+            return '['.$variable.']';
+        }, $templateVariables);
+
         return compact(
             'mailTemplate',
             'templateVariables',

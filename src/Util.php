@@ -47,7 +47,7 @@ class Util
 
         $mailTemplateVariables = config('mail-templates.global_variables');
         
-        $mailTemplateVariables += $notification->getTemplateVariables($notifiable);
+        $mailTemplateVariables = $notification->getTemplateVariables($notifiable) + $mailTemplateVariables;
 
         // Global variables assignment
         $mailTemplateVariables['username'] = isset($notifiable->username) ? $notifiable->username : '';
@@ -56,6 +56,24 @@ class Util
 
         foreach ($mailTemplateVariables as $mailTemplateVariable => $val) {
             $templateContent = str_replace('[' . $mailTemplateVariable . ']', $val, $templateContent);
+        }
+
+        foreach (config('mail-templates.button_style') as $type => $style) {
+            preg_match("/\[".$type."Button:(.*):(.*)]/", $templateContent, $buttonData);
+            if (!isset($buttonData[1]) || !isset($buttonData[2])) {
+                continue;
+            }
+
+            $buttonUrl = isset($mailTemplateVariables[$buttonData[1]]) ? $mailTemplateVariables[$buttonData[1]] : '';
+            $buttonText = $buttonData[2];
+            $buttonStyle = $style;
+            $buttonMarkup = view('vendor.core.notifications.partials.button', compact('buttonUrl', 'buttonText', 'buttonStyle'));
+            $templateContent = preg_replace("/\[".$type."Button:(.*):(.*)]/", $buttonMarkup, $templateContent);
+        }
+
+        //apply style for html tags
+        foreach(config('mail-templates.tag_styles') as $tags => $style) {
+            $templateContent = str_replace('<'.$tags.'>', '<'.$tags.' style="'.$style.'">', $templateContent);
         }
 
         //return $templateContent;

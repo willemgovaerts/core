@@ -59,32 +59,20 @@
     </div>
 @endsection
 @push('body-js')
-    <script type="text/javascript" src="{{ asset('js/tinymce/jquery.tinymce.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function(){
             tinymce.init({
                 selector: 'textarea',
-                height: 500,
+                height: 300,
                 menubar: false,
                 plugins: [
                     'advlist autolink textcolor',
                     'searchreplace visualblocks code fullscreen',
-                    'table contextmenu paste code help wordcount'
+                    'table contextmenu paste code help wordcount link'
                 ],
-                toolbar: 'insert | undo redo |  formatselect | bold italic backcolor  | alignleft aligncenter alignright alignjustify | removeformat | help',
-                content_css: [
-                    '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
-                    '//www.tinymce.com/css/codepen.min.css']
+                toolbar: 'formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | link',
             });
         });
     </script>
 @endpush
-{{--@push('body-js')--}}
-{{--<script>--}}
-{{--$('.tags').on('click', function() {--}}
-{{--var val = $('#content').val();--}}
-{{--$('#content').val( val + ' ' + $(this).data('tag'));--}}
-{{--});--}}
-{{--</script>--}}
-{{--@endpush--}}
