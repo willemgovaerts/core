@@ -28,7 +28,6 @@ class GetPreview extends GetAction
 
     public function execute($templateId)
     {
-        $templateContent = $this->mailTemplateService->getTemplateContent($templateId, $this->user());
-        return view('vendor.notifications.email', compact('templateContent'));
+        return view('vendor.core.notifications.email', $this->mailTemplateService->getTemplateContent($templateId, $this->user()));
     }
 }

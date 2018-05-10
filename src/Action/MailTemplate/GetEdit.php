@@ -27,11 +27,11 @@ class GetEdit extends GetAction
         return [];
     }
 
-    public function execute($templateId, $locale = 'en')
+    public function execute($templateId)
     {
         return view(
             'vendor.core.mail-template.form',
-            $this->mailTemplateService->getTemplateEdit($templateId, $locale)
+            $this->mailTemplateService->getTemplateEdit($templateId, request('locale', 'en'))
         );
     }
 }

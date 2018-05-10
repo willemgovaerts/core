@@ -38,6 +38,7 @@ class Util
         $notificationClassName = class_basename($notificationPath);
 
         $mailTemplate = MailTemplate::query()->where('type', $notificationClassName)->first();
+        $mailTemplateUrls = [];
 
         $mailTemplateContent = MailTemplateContent::query()
             ->where('mail_template_id', '=', $mailTemplate->id)
@@ -69,6 +70,7 @@ class Util
             $buttonStyle = $style;
             $buttonMarkup = view('vendor.core.notifications.partials.button', compact('buttonUrl', 'buttonText', 'buttonStyle'));
             $templateContent = preg_replace("/\[".$type."Button:(.*):(.*)]/", $buttonMarkup, $templateContent);
+            $mailTemplateUrls[] = $buttonUrl;
         }
 
         //apply style for html tags
@@ -79,6 +81,6 @@ class Util
         //return $templateContent;
         return (new MailMessage)
             ->subject($mailTemplateContent->subject)
-            ->view('vendor.notifications.email', compact('templateContent'));
+            ->view('vendor.core.notifications.email', compact('templateContent','mailTemplateUrls'));
     }
 }

@@ -32,10 +32,8 @@ class MailTemplateService
             return false;
         }
 
-        $notification = new $notificationClass();
-
         //check if getTemplateVariables method
-        if (!method_exists($notification, 'getTemplateVariables')) {
+        if (!isset($notificationClass::$templateVariables)) {
             return false;
         }
 
@@ -128,8 +126,7 @@ class MailTemplateService
         // TODO: do we really need to call this?
         $message = $notification->toMail($user);
 
-        $templateContent = $message->viewData;
-        return (isset($templateContent['templateContent'])) ? $templateContent['templateContent'] : '';
+        return $message->viewData;
     }
 
     public function getTemplateEdit(int $templateId, string $locale)

@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
-<body style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; background-color: #f5f8fa; color: #74787E; height: 100%; hyphens: auto; line-height: 1.4; margin: 0; -moz-hyphens: auto; -ms-word-break: break-all; width: 100% !important; -webkit-hyphens: auto; -webkit-text-size-adjust: none; word-break: break-word;">
+<body style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #74787E; height: 100%; hyphens: auto; line-height: 1.4; margin: 0; -moz-hyphens: auto; -ms-word-break: break-all; width: 100% !important; -webkit-hyphens: auto; -webkit-text-size-adjust: none; word-break: break-word;">
 <style>
     @media only screen and (max-width: 600px) {
         .inner-body {
@@ -46,26 +46,23 @@
                             <!-- Body content -->
                             <tbody>
                             <tr>
-                                <td class="content-cell" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;">
+                                <td class="content-cell" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; padding: 35px;">
                                     @if(!empty($templateContent))
                                         {!! $templateContent !!}
                                     @endif
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <table class="inner-body" align="center" width="570" cellpadding="0" cellspacing="0" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; background-color: #FFFFFF; margin: 0 auto; padding: 0; width: 570px; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px;">
-                            <!-- Body content -->
-                            <tbody>
-                            <tr>
-                                <td>
-                                    <p style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #74787E; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">Regards,<br>{{ config('app.name') }}</p>
+
+                                    <p style="{{config('mail-templates.tag_styles.p')}}">Regards,<br>{{ config('app.name') }}</p>
                                     <table class="subcopy" width="100%" cellpadding="0" cellspacing="0" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; border-top: 1px solid #EDEFF2; margin-top: 25px; padding-top: 25px;">
                                         <tbody>
                                         <tr>
                                             <td style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box;">
                                                 <p style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #74787E; line-height: 1.5em; margin-top: 0; text-align: left; font-size: 12px;">If you’re having trouble clicking the above button, copy and paste the URL below
-                                                    into your web browser: <a href="{{ config('app.url') }}" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #3869D4;"> {{ config('app.url') }}</a>
+                                                    into your web browser:
+                                                    @if(!empty($mailTemplateUrls))
+                                                        @foreach($mailTemplateUrls as $mailTemplateUrl)
+                                                            <a href="{{ url($mailTemplateUrl) }}" style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #3869D4;"> {{ url($mailTemplateUrl) }}</a>
+                                                        @endforeach
+                                                    @endif
                                                 </p>
                                             </td>
                                         </tr>
@@ -75,6 +72,7 @@
                             </tr>
                             </tbody>
                         </table>
+
                     </td>
                 </tr>
                 <tr>

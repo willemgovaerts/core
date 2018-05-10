@@ -28,6 +28,9 @@ class GetList extends GetAction
 
     public function execute()
     {
+        //refresh template list
+        $this->mailTemplateService->createMailTemplateByLocals();
+
         $mailTemplates = MailTemplate::query()->get();
 
         return view('vendor.core.mail-template.list', compact('mailTemplates'));

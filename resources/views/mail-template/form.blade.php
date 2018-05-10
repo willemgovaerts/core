@@ -9,8 +9,8 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12 text-right mb-2">
-                                @foreach($locales as $locale)
-                                    <a href="{{ route('MailTemplate.GetEdit', ['id'=>$mailTemplate->id, 'locale'=>$locale]) }}" class="badge badge-primary p-2">{{ $locale }}</a>
+                                @foreach($locales as $value)
+                                    <a href="{{ route('MailTemplate.GetEdit', ['id'=>$mailTemplate->id, 'locale'=>$value]) }}" class="badge badge-primary p-2">{{ $value }}</a>
                                 @endforeach
                             </div>
                         </div>
@@ -59,20 +59,20 @@
     </div>
 @endsection
 @push('body-js')
-    <script type="text/javascript" src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
-    <script type="text/javascript">
-        $(document).ready(function(){
-            tinymce.init({
-                selector: 'textarea',
-                height: 300,
-                menubar: false,
-                plugins: [
-                    'advlist autolink textcolor',
-                    'searchreplace visualblocks code fullscreen',
-                    'table contextmenu paste code help wordcount link'
-                ],
-                toolbar: 'formatselect | bold italic backcolor | alignleft aligncenter alignright alignjustify | link',
-            });
+<script type="text/javascript" src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+<script type="text/javascript">
+    $(document).ready(function(){
+        tinymce.init({
+            selector: 'textarea',
+            height: 300,
+            menubar: false,
+            plugins: [
+                'advlist autolink textcolor',
+                'searchreplace visualblocks code fullscreen',
+                'table contextmenu paste code help wordcount link'
+            ],
+            toolbar: 'formatselect | bold italic backcolor | link',
         });
-    </script>
+    });
+</script>
 @endpush

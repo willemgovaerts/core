@@ -31,19 +31,19 @@ class PostUpdate extends PostAction
     public function rules()
     {
         return [
+            'locale' => 'required|string',
             'subject'=>'required|string',
             'content'=>'required|string'
         ];
     }
 
-    public function execute($templateId = null, $locale = 'en')
+    public function execute($templateId = null)
     {
         $mailTemplateContentDTO = new MailTemplateContentDTO($this->data());
         $mailTemplateContentDTO->mail_template_id = $templateId;
-        $mailTemplateContentDTO->locale = $locale;
 
         $this->mailTemplateService->createMailTemplateContent($mailTemplateContentDTO);
 
-        return redirect()->route('MailTemplate.GetList');
+        return redirect()->back();
     }
 }
