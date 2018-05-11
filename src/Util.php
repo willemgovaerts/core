@@ -11,6 +11,30 @@ use Illuminate\Notifications\Messages\MailMessage;
 
 class Util
 {
+    public static function setDTOData($modelObject, $DTO, $only = [])
+    {
+        foreach ($DTO as $property => $value) {
+            $property = camel_case($property);
+            $method = 'set'.$property;
+
+            if ($only && !in_array($property, $only)) {
+                continue;
+            }
+
+            if(!$value || empty($value)) {
+                continue;
+            }
+
+            if (!method_exists($modelObject, $method)) {
+                continue;
+            }
+
+            $modelObject->{$method}($value);
+        }
+
+        return $modelObject;
+    }
+
     public static function notify($notifiable, Notification $notification, $model = null)
     {
         $mailLog = new MailLog();

@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\File;
 use App\Domain\MailTemplate\MailTemplate;
 use App\Domain\MailTemplate\MailTemplateContent;
 use Levaral\Core\DTO\MailTemplateContentDTO;
+use Levaral\Core\Util;
 
 class MailTemplateService
 {
@@ -75,22 +76,7 @@ class MailTemplateService
             $mailTemplateContent = new MailTemplateContent();
         }
 
-        if (!empty($mailTemplateContentDTO->locale)) {
-            $mailTemplateContent->setLocale($mailTemplateContentDTO->locale);
-        }
-
-        if (!empty($mailTemplateContentDTO->mail_template_id)) {
-            $mailTemplateContent->setMailTemplateId($mailTemplateContentDTO->mail_template_id);
-        }
-
-        if (!empty($mailTemplateContentDTO->subject)) {
-            $mailTemplateContent->setSubject($mailTemplateContentDTO->subject);
-        }
-
-        if (!empty($mailTemplateContentDTO->content)) {
-            $mailTemplateContent->setContent($mailTemplateContentDTO->content);
-        }
-
+        $mailTemplateContent = Util::setDTOData($mailTemplateContent, $mailTemplateContentDTO);
         $mailTemplateContent->save();
 
         return $mailTemplateContent;
