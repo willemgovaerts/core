@@ -23,8 +23,8 @@ class ExpoPushNotification
         $content = [];
 
         if (!isset($message['to'])) {
-            foreach ($notifiable->userExpoTokens() as $token) {
-                $content[] = array_merge(['to' => $token->token], $message);
+            foreach ($notifiable->expoTokens() as $token) {
+                $content = array_merge(['to' => $token], $message);
             }
         } else {
             $content = $message;
@@ -33,18 +33,16 @@ class ExpoPushNotification
         // Send notification to the $notifiable instance...
         $client = new Client();
 
-        $request = $client->post(self::EXPO_PUSH_URL, [
+        $response = $client->post(self::EXPO_PUSH_URL, [
             'headers' => [
                 'accept' => 'application/json',
                 'accept-encoding' => 'gzip, deflate',
                 'content-type' => 'application/json',
             ],
             'json' => $content
-        ], $content);
+        ]);
 
-        $request->send();
-
-        if($request->getStatusCode() !== SUCCESS_STATUS_CODE) {
+        if($response->getStatusCode() !== SUCCESS_STATUS_CODE) {
             throw new \Exception('Could not process expo push notification request');
         }
     }
