@@ -641,6 +641,7 @@ class ModelsCommand extends Command
         }
         // add belongsToMany, hasOne and hasMany relations
         $schemaManager->getDatabasePlatform()->registerDoctrineTypeMapping('enum', 'string');
+        $schemaManager->getDatabasePlatform()->registerDoctrineTypeMapping('point', 'string');
         $tables = $schemaManager->listTables();
         foreach ($tables as $table) {
             if ($table->getName() === $tableName) {
