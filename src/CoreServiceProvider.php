@@ -2,6 +2,7 @@
 
 namespace Levaral\Core;
 
+use Levaral\Core\Commands\GenerateModelBase;
 use Levaral\Core\Commands\CreateMailLogsTable;
 use Levaral\Core\Commands\CreateMailTemplateTables;
 use Levaral\Core\Commands\CreateUserExpoTokensTable;
@@ -50,9 +51,14 @@ class CoreServiceProvider extends ServiceProvider
                 CreateUserExpoTokensTable::class,
                 CreateMailLogsTable::class,
                 CreateMailTemplateTables::class,
-                RefreshMailTemplates::class
+                RefreshMailTemplates::class,
+                GenerateModelBase::class
             ]);
         }
+
+        $this->app->singleton('Levaral\Core\ModelProperty\ModelManager', function() {
+            return new \Levaral\Core\ModelProperty\ModelManager();
+        });
     }
 
     public function provides()
