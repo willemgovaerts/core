@@ -35,18 +35,15 @@ class GenerateModelBase extends Command
      */
     protected $files;
 
-    protected $modelManager;
-
     /**
      * Create a new command instance.
      *
      * @return void
      */
-    public function __construct(Filesystem $files, ModelManager $modelManager)
+    public function __construct(Filesystem $files)
     {
         parent::__construct();
         $this->files = $files;
-        $this->modelManager = $modelManager;
 
     }
 
@@ -62,7 +59,7 @@ class GenerateModelBase extends Command
             $this->makeBaseModel($namespace, $class, $model);
         }
 
-        foreach ($this->modelManager->getModelMetas() as $key => $model) {
+        foreach (app()->make(ModelManager::class)->getModelMetas() as $key => $model) {
             $this->handleModel($key, $model);
         }
 
