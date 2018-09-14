@@ -167,7 +167,9 @@ class SendgridTransport extends Transport
 
             $data['x-smtpapi'] = json_encode($attachment->getBody());
         }
-        $data['x-smtpapi'] = $message->getHeaders()->get('x-smtpapi')->getFieldBody();
+        if($message->getHeaders()->get('x-smtpapi')) {
+            $data['x-smtpapi'] = $message->getHeaders()->get('x-smtpapi')->getFieldBody();
+        }
     }
 
 }
