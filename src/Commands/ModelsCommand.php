@@ -548,10 +548,12 @@ class ModelsCommand extends Command
             $newParameter = PhpParameter::create($parameter->getName());
             if ($parameter->hasType()) {
                 $type = $parameter->getType();
-                if (ends_with($type, 'Builder')) {
+                if (ends_with($type->getName(), 'Builder')) {
                     $type = 'Builder';
                 }
-                $newParameter->setType((string)$type);
+                if ($type->getName() != 'self') {
+                    $newParameter->setType((string)$type);
+                }
             }
             if ($parameter->isDefaultValueAvailable()) {
                 $value = $parameter->getDefaultValue();
