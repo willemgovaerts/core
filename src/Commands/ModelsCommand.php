@@ -552,7 +552,7 @@ class ModelsCommand extends Command
                     $type = 'Builder';
                 }
                 if ($type->getName() != 'self') {
-                    $newParameter->setType((string)$type);
+                    $newParameter->setType($type->getName());
                 }
             }
             if ($parameter->isDefaultValueAvailable()) {
